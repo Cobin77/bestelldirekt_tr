@@ -110,7 +110,7 @@
 
 <body>
 
-    <!-- Footer / Navigation -->
+    <!-- Navigation -->
     <nav
         class="fixed w-full z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-100 h-20 flex items-center px-6">
         <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
@@ -252,14 +252,112 @@
 
             <!-- CTAs & Burger -->
             <div class="flex items-center space-x-4 z-[110]">
-                <!--<button
-                    class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-blue-600 transition shadow-xl shadow-slate-200">
-                    Get Started
-                </button>-->
+                <a href="register.html">
+                    <!--<button
+                        class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-blue-600 transition shadow-xl shadow-slate-200">
+                        Get Started
+                    </button>-->
+                </a>
                 <button id="burger-btn"
                     class="lg:hidden w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 transition">
                     <i class="fas fa-bars" id="burger-icon"></i>
                 </button>
+            </div>
+
+            <div id="mobile-menu"
+                class="fixed top-20 left-0 w-full bg-white/90 backdrop-blur-xl border-t border-slate-100 shadow-lg h-screen transform -translate-y-full transition-transform duration-300 z-50 overflow-y-auto">
+                <ul class="flex flex-col p-6 space-y-4">
+
+                    <!-- Lösungen -->
+                    <li>
+                        <button
+                            class="flex justify-between items-center w-full font-bold text-slate-700 hover:text-blue-600 transition submenu-toggle">
+                            Lösungen
+                            <i class="fas fa-plus transition-transform"></i>
+                        </button>
+                        <ul class="mt-2 ml-4 space-y-2 hidden">
+                            <li>
+                                <a href="solutions.html"
+                                    class="flex items-center space-x-3 p-3 bg-blue-50 rounded-xl hover:bg-blue-100 transition">
+                                    <i class="fas fa-layer-group text-blue-600 w-5"></i>
+                                    <span>Übersicht</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="driver.html"
+                                    class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition">
+                                    <i class="fas fa-bicycle text-slate-600 w-5"></i>
+                                    <span>Fahrer Portal</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="how-it-works.html"
+                                    class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition">
+                                    <i class="fas fa-info-circle text-slate-600 w-5"></i>
+                                    <span>So funktioniert's</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Entwickler -->
+                    <li>
+                        <button
+                            class="flex justify-between items-center w-full font-bold text-slate-700 hover:text-blue-600 transition submenu-toggle">
+                            Entwickler
+                            <i class="fas fa-plus transition-transform"></i>
+                        </button>
+                        <ul class="mt-2 ml-4 space-y-2 hidden">
+                            <li>
+                                <a href="api-docs.html"
+                                    class="flex items-center space-x-3 p-3 bg-blue-50 rounded-xl hover:bg-blue-100 transition">
+                                    <i class="fas fa-code text-blue-600 w-5"></i>
+                                    <span>API Referenz</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="sdk.html"
+                                    class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition">
+                                    <i class="fas fa-box-open text-slate-600 w-5"></i>
+                                    <span>SDKs & Libraries</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="status.html"
+                                    class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition">
+                                    <i class="fas fa-signal text-slate-600 w-5"></i>
+                                    <span>System Status</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <!-- Unternehmen -->
+                    <li>
+                        <button
+                            class="flex justify-between items-center w-full font-bold text-slate-700 hover:text-blue-600 transition submenu-toggle">
+                            Unternehmen
+                            <i class="fas fa-plus transition-transform"></i>
+                        </button>
+                        <ul class="mt-2 ml-4 space-y-2 hidden">
+                            <li>
+                                <a href="about.html"
+                                    class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition">
+                                    <i class="fas fa-users text-slate-600 w-5"></i>
+                                    <span>Über uns</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="contact.html"
+                                    class="flex items-center space-x-3 p-3 bg-slate-50 rounded-xl hover:bg-blue-50 transition">
+                                    <i class="fas fa-envelope text-slate-600 w-5"></i>
+                                    <span>Kontakt</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
             </div>
         </div>
     </nav>
@@ -523,6 +621,62 @@
                 alert('Hoppla! Es gab ein Problem beim Senden Ihrer Nachricht. Bitte versuchen Sie es später erneut oder schreiben Sie uns direkt an kontakt@bestelldirekt24.de');
                 submitBtn.disabled = false;
                 submitBtn.innerHTML = originalContent;
+            }
+        });
+    </script>
+
+    <script>
+        // DOM Elements
+        const burgerBtn = document.getElementById('burger-btn');
+        const burgerIcon = document.getElementById('burger-icon');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const submenuToggles = document.querySelectorAll('.submenu-toggle');
+
+        // Toggle Mobile Menu
+        burgerBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('active');
+
+            // Slide Animation
+            mobileMenu.style.transform = isOpen ? 'translateY(0)' : 'translateY(-100%)';
+
+            // Icon Change
+            burgerIcon.classList.toggle('fa-bars', !isOpen);
+            burgerIcon.classList.toggle('fa-times', isOpen);
+
+            // Prevent scroll when menu is open
+            document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+        });
+
+        // Toggle Submenus
+        submenuToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const submenu = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                // Toggle current submenu
+                submenu.classList.toggle('hidden');
+
+                // Rotate icon
+                icon.style.transform = submenu.classList.contains('hidden') ? 'rotate(0deg)' : 'rotate(45deg)';
+
+                // Optional: Close other submenus
+                submenuToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.add('hidden');
+                        otherToggle.querySelector('i').style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+        });
+
+        // Close menu on resize if screen gets larger
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                mobileMenu.classList.remove('active');
+                mobileMenu.style.transform = 'translateY(-100%)';
+                burgerIcon.classList.add('fa-bars');
+                burgerIcon.classList.remove('fa-times');
+                document.body.style.overflow = 'auto';
             }
         });
     </script>
