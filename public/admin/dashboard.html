@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard | BestellDirekt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+        }
+
+        .slide-over {
+            transform: translateX(100%);
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .slide-over.active {
+            transform: translateX(0);
+        }
+
+        #login-overlay {
+            backdrop-filter: blur(8px);
+            transition: opacity 0.4s ease;
+        }
+
+        .status-badge-pending {
+            @apply bg-amber-100 text-amber-700 border-amber-200;
+        }
+
+        .status-badge-approved {
+            @apply bg-emerald-100 text-emerald-700 border-emerald-200;
+        }
+
+        .status-badge-rejected {
+            @apply bg-rose-100 text-rose-700 border-rose-200;
+        }
+
+        .hidden-auth {
+            display: none !important;
+        }
+
+        /* WICHTIG: Das Slide-Over darf nur Platz wegnehmen, wenn es aktiv ist */
+        #slide-over.inactive {
+            visibility: hidden;
+            pointer-events: none;
+        }
+
+        #slide-over.active-visible {
+            visibility: visible;
+            pointer-events: auto;
+        }
+
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex flex-col overflow-x-hidden">
+
+    <div id="login-overlay" class="fixed inset-0 z-[100] bg-slate-900/90 flex items-center justify-center p-6">
+        <div class="bg-white w-full max-w-md rounded-3xl shadow-2xl overflow-hidden">
+            <div class="p-8 bg-blue-600 text-white text-center">
+                <div class="w-16 h-16 bg-white/20 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <i class="fas fa-lock text-2xl"></i>
+                </div>
+                <h2 class="text-2xl font-black uppercase tracking-tight">Admin Login</h2>
+                <p class="text-blue-100 text-sm mt-1">Bitte melde dich an, um fortzufahren.</p>
+            </div>
+            <form id="login-form" class="p-8 space-y-4">
+                <div>
+                    <label
+                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1 ml-1">E-Mail</label>
+                    <input type="email" id="login-email" required placeholder="admin@bestelldirekt.de"
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-600 transition text-sm">
+                </div>
+                <div>
+                    <label
+                        class="text-[10px] font-bold text-slate-400 uppercase tracking-widest block mb-1 ml-1">Passwort</label>
+                    <input type="password" id="login-password" required placeholder="••••••••"
+                        class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-600 transition text-sm">
+                </div>
+                <div id="login-error"
+                    class="hidden text-rose-600 text-xs font-bold text-center bg-rose-50 py-2 rounded-lg border border-rose-100">
+                    Fehler bei der Anmeldung.
+                </div>
+                <button type="submit"
+                    class="w-full bg-slate-900 text-white font-bold py-4 rounded-xl hover:bg-slate-800 transition shadow-lg mt-2">
+                    Anmelden
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <div id="dashboard-content" class="hidden-auth flex-grow flex flex-col">
+        <header class="bg-white border-b border-slate-200 sticky top-0 z-30">
+            <div class="max-w-[1600px] mx-auto px-6 h-20 flex items-center justify-between">
+                <div class="flex items-center gap-4">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="text-lg font-black uppercase tracking-tight">Bestell<span
+                                class="text-blue-600">Direkt</span></h1>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Partner Administration
+                        </p>
+                    </div>
+                </div>
+                <div class="flex items-center gap-6">
+                    <div class="text-right hidden sm:block">
+                        <p id="admin-display-email" class="text-sm font-bold text-slate-900"></p>
+                        <p class="text-[10px] text-slate-500 uppercase font-medium">System Administrator</p>
+                    </div>
+                    <button id="btn-logout" class="p-2 text-slate-400 hover:text-rose-600 transition text-lg">
+                        <i class="fas fa-power-off"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="flex-grow max-w-[1600px] w-full mx-auto p-6">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Offen</p>
+                    <h3 id="stat-pending" class="text-3xl font-black text-slate-900">0</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Partner</p>
+                    <h3 id="stat-approved" class="text-3xl font-black text-slate-900">0</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Abgelehnt</p>
+                    <h3 id="stat-rejected" class="text-3xl font-black text-slate-900">0</h3>
+                </div>
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm text-center">
+                    <p class="text-[10px] font-bold text-slate-500 uppercase tracking-widest mb-2">Gesamt</p>
+                    <h3 id="stat-total" class="text-3xl font-black text-slate-900">0</h3>
+                </div>
+            </div>
+
+            <div class="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden">
+                <div class="p-6 border-b flex justify-between items-center">
+                    <h2 class="text-xl font-black text-slate-900 uppercase tracking-tight">Partner-Bewerbungen</h2>
+                    <input type="text" id="table-search" placeholder="Suche..."
+                        class="px-4 py-2 bg-slate-50 border rounded-xl text-sm outline-none w-80">
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left">
+                        <thead class="bg-slate-50 border-b border-slate-100">
+                            <tr>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    Unternehmen</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    Kontakt</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    Standort</th>
+                                <th class="px-6 py-4 text-[10px] font-black text-slate-400 uppercase tracking-widest">
+                                    Status</th>
+                                <th class="px-6 py-4"></th>
+                            </tr>
+                        </thead>
+                        <tbody id="registrations-tbody" class="divide-y divide-slate-100">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="slide-over" class="fixed inset-0 z-50 inactive">
+        <div id="overlay" class="absolute inset-0 bg-slate-900/60 opacity-0 transition-opacity duration-300"></div>
+        <div class="absolute inset-y-0 right-0 max-w-2xl w-full bg-white shadow-2xl slide-over flex flex-col">
+            <div class="p-8 border-b bg-slate-900 text-white flex justify-between items-center">
+                <div>
+                    <h3 id="detail-company" class="text-2xl font-black uppercase tracking-tight">Details</h3>
+                    <p id="detail-id" class="text-[10px] font-bold text-blue-400 uppercase tracking-widest mt-1"></p>
+                </div>
+                <button id="close-detail"
+                    class="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div id="detail-content" class="flex-grow overflow-y-auto p-8 bg-slate-50/50"></div>
+            <div class="p-8 border-t bg-white flex gap-4">
+                <button id="action-reject"
+                    class="flex-1 bg-white border-2 border-rose-600 text-rose-600 py-4 rounded-xl font-bold hover:bg-rose-50 transition">Ablehnen</button>
+                <button id="action-approve"
+                    class="flex-1 bg-blue-600 text-white py-4 rounded-xl font-bold hover:bg-blue-700 transition shadow-lg shadow-blue-200">Freischalten</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, onSnapshot, doc, updateDoc } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgL5egcS9pSc43hDGC2FyfNvxQvwlxFN4",
+            authDomain: "bestelldirekt-e3be2.firebaseapp.com",
+            projectId: "bestelldirekt-e3be2",
+            storageBucket: "bestelldirekt-e3be2.firebasestorage.app",
+            messagingSenderId: "857285469831",
+            appId: "1:857285469831:web:983162d26befb17c937a22"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const appId = "bestelldirekt-e3be2";
+
+        let registrations = [];
+        let selectedId = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('login-overlay').style.display = 'none';
+                document.getElementById('dashboard-content').classList.remove('hidden-auth');
+                document.getElementById('admin-display-email').innerText = user.email;
+                initData();
+            } else {
+                document.getElementById('login-overlay').style.display = 'flex';
+                document.getElementById('dashboard-content').classList.add('hidden-auth');
+            }
+        });
+
+        document.getElementById('login-form').onsubmit = async (e) => {
+            e.preventDefault();
+            try {
+                await signInWithEmailAndPassword(auth, document.getElementById('login-email').value, document.getElementById('login-password').value);
+            } catch (err) {
+                document.getElementById('login-error').classList.remove('hidden');
+            }
+        };
+
+        document.getElementById('btn-logout').onclick = () => signOut(auth);
+
+        function initData() {
+            onSnapshot(collection(db, 'artifacts', appId, 'public', 'data', 'registrations'), (snapshot) => {
+                registrations = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() }));
+                renderTable();
+                updateStats();
+            });
+        }
+
+        function updateStats() {
+            const counts = {
+                pending: registrations.filter(r => r.status === 'pending_review' || !r.status).length,
+                approved: registrations.filter(r => r.status === 'approved').length,
+                rejected: registrations.filter(r => r.status === 'rejected').length,
+                total: registrations.length
+            };
+            document.getElementById('stat-pending').innerText = counts.pending;
+            document.getElementById('stat-approved').innerText = counts.approved;
+            document.getElementById('stat-rejected').innerText = counts.rejected;
+            document.getElementById('stat-total').innerText = counts.total;
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('registrations-tbody');
+            const search = document.getElementById('table-search').value.toLowerCase();
+            const filtered = registrations.filter(r => (r.companyName || "").toLowerCase().includes(search));
+
+            tbody.innerHTML = filtered.map(reg => `
+                <tr class="hover:bg-slate-50 transition cursor-pointer group" onclick="openDetail('${reg.id}')">
+                    <td class="px-6 py-5">
+                        <p class="font-bold text-slate-900">${reg.companyName || 'N/A'}</p>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-tighter">${reg.legalForm || '-'}</p>
+                    </td>
+                    <td class="px-6 py-5 text-sm">
+                        <p class="font-semibold text-slate-700">${reg.contactFirstName || ''} ${reg.contactLastName || ''}</p>
+                        <p class="text-xs text-slate-400">${reg.contactEmail || '-'}</p>
+                    </td>
+                    <td class="px-6 py-5 text-sm text-slate-600 font-medium">${reg.city || ''}</td>
+                    <td class="px-6 py-5">
+                        <span class="px-3 py-1 rounded-full text-[10px] font-black uppercase border ${reg.status === 'approved' ? 'status-badge-approved' : 'status-badge-pending'}">
+                            ${reg.status === 'approved' ? 'Partner' : 'Wartet'}
+                        </span>
+                    </td>
+                    <td class="px-6 py-5 text-right"><i class="fas fa-chevron-right text-slate-200 group-hover:text-blue-600 transition"></i></td>
+                </tr>
+            `).join('');
+        }
+
+        window.openDetail = (id) => {
+            selectedId = id;
+            const reg = registrations.find(r => r.id === id);
+            document.getElementById('detail-company').innerText = reg.companyName;
+            document.getElementById('detail-id').innerText = `ID: ${id}`;
+
+            document.getElementById('detail-content').innerHTML = `
+                <div class="space-y-6">
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex items-center gap-2">
+                            <i class="fas fa-id-card text-blue-600"></i> Stammdaten
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><p class="text-[9px] font-bold text-slate-400 uppercase">Rechtsform</p><p class="font-bold">${reg.legalForm || '-'}</p></div>
+                            <div><p class="text-[9px] font-bold text-slate-400 uppercase">Gründung</p><p class="font-bold">${reg.foundingYear || '-'}</p></div>
+                            <div class="col-span-2 border-t pt-2"><p class="text-[9px] font-bold text-slate-400 uppercase">Adresse</p>
+                            <p class="font-bold text-slate-800">${reg.street || reg.address || ''} ${reg.houseNumber || ''}</p>
+                            <p class="font-bold text-slate-800">${reg.zipCode || reg.zip || ''} ${reg.city || ''}</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex items-center gap-2">
+                            <i class="fas fa-user-circle text-indigo-600"></i> Kontaktperson
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><p class="text-[9px] font-bold text-slate-400 uppercase">Name</p><p class="font-bold">${reg.contactFirstName} ${reg.contactLastName}</p></div>
+                            <div><p class="text-[9px] font-bold text-slate-400 uppercase">Position</p><p class="font-bold">${reg.contactPosition || '-'}</p></div>
+                            <div class="col-span-2"><p class="text-[9px] font-bold text-slate-400 uppercase">E-Mail</p><p class="font-bold text-blue-600">${reg.contactEmail}</p></div>
+                        </div>
+                    </div>
+                    <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm">
+                        <h4 class="text-[10px] font-black text-slate-400 uppercase mb-4 flex items-center gap-2">
+                            <i class="fas fa-boxes text-emerald-600"></i> Logistik-Profil
+                        </h4>
+                        <div class="grid grid-cols-2 gap-4 text-sm">
+                            <div><p class="text-[9px] font-bold text-slate-400 uppercase">Lagerfläche</p><p class="font-bold">${reg.storageSize || '0'} m²</p></div>
+                            <div><p class="text-[9px] font-bold text-slate-400 uppercase">Express</p><p class="font-bold">${reg.expressShipping === 'yes' ? 'Ja' : 'Nein'}</p></div>
+                        </div>
+                        <div class="mt-4 pt-2 border-t">
+                             <p class="text-[9px] font-bold text-slate-400 uppercase mb-2">Kategorien</p>
+                             <div class="flex flex-wrap gap-2">
+                                ${(reg.categories || []).map(cat => `<span class="px-2 py-1 bg-blue-50 text-blue-700 rounded text-[10px] font-bold uppercase border border-blue-100">${cat}</span>`).join('') || '-'}
+                             </div>
+                        </div>
+                    </div>
+                </div>`;
+
+            const so = document.getElementById('slide-over');
+            so.classList.replace('inactive', 'active-visible');
+            setTimeout(() => {
+                document.querySelector('.slide-over').classList.add('active');
+                document.getElementById('overlay').classList.replace('opacity-0', 'opacity-100');
+            }, 10);
+        };
+
+        const closeDetail = () => {
+            document.querySelector('.slide-over').classList.remove('active');
+            document.getElementById('overlay').classList.replace('opacity-100', 'opacity-0');
+            setTimeout(() => {
+                document.getElementById('slide-over').classList.replace('active-visible', 'inactive');
+            }, 300);
+        };
+
+        document.getElementById('close-detail').onclick = closeDetail;
+        document.getElementById('overlay').onclick = closeDetail;
+
+        window.updateStatus = async (s) => {
+            if (!selectedId) return;
+            await updateDoc(doc(db, 'artifacts', appId, 'public', 'data', 'registrations', selectedId), { status: s });
+            closeDetail();
+        };
+
+        document.getElementById('action-approve').onclick = () => window.updateStatus('approved');
+        document.getElementById('action-reject').onclick = () => window.updateStatus('rejected');
+        document.getElementById('table-search').oninput = renderTable;
+    </script>
+</body>
+
+</html>

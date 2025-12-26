@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>API Dokumentation & Schnittstellen | BestellDirekt Developer</title>
+    <meta name="description"
+        content="Integrieren Sie BestellDirekt nahtlos in Ihre Systeme. Entdecken Sie unsere REST-API Dokumentation für automatisierte Logistik-Prozesse und Echtzeit-Versanddaten.">
+    <meta name="keywords"
+        content="API Dokumentation, REST API, Logistik Schnittstelle, E-Commerce Integration, BestellDirekt API, Developer Portal">
+    <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" href="../src/assets/images/favicons/favicon.png">
+    <link rel="apple-touch-icon" href="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <meta property="og:title" content="BestellDirekt API | Schnittstellen für Entwickler">
+    <meta property="og:description"
+        content="Automatisieren Sie Ihre Logistik mit der BestellDirekt API. Jetzt Dokumentation ansehen.">
+    <meta property="og:image" content="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            scroll-behavior: smooth;
+        }
+
+        /* Navbar Start */
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu Side-Slide */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Mobile Submenu Toggle */
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .mobile-submenu.open {
+            max-height: 500px;
+        }
+
+        /* Navbar End */
+
+        .sidebar-link {
+            transition: all 0.2s ease;
+            cursor: pointer;
+        }
+
+        .sidebar-link.active {
+            background-color: #eff6ff;
+            color: #2563eb;
+            border-right: 4px solid #2563eb;
+        }
+
+        pre {
+            font-family: 'Fira Code', monospace;
+        }
+
+        .endpoint-badge {
+            font-size: 0.65rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: 800;
+            text-transform: uppercase;
+        }
+
+        .code-container {
+            background-color: #0f172a;
+            border-radius: 1rem;
+            padding: 1.5rem;
+            color: #e2e8f0;
+            font-size: 0.825rem;
+            line-height: 1.6;
+            overflow-x: auto;
+            border: 1px solid #1e293b;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 4px;
+        }
+
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #e2e8f0;
+            border-radius: 10px;
+        }
+
+        section {
+            scroll-margin-top: 100px;
+        }
+    </style>
+</head>
+
+<body class="bg-white text-slate-900">
+
+    <!-- Footer / Navigation -->
+    <nav
+        class="fixed w-full z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-100 h-20 flex items-center px-6">
+        <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+
+            <!-- Branding -->
+            <a href="index.html" class="flex items-center space-x-2 shrink-0 z-[110]">
+                <div
+                    class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-black tracking-tighter uppercase leading-none">Bestell<span
+                            class="text-blue-600">Direkt</span></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Global
+                        Logistics</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu (Hidden on Mobile) -->
+            <div class="hidden lg:flex items-center space-x-1">
+                <!-- Dropdown: Lösungen -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Lösungen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="solutions.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Übersicht</p>
+                                <p class="text-[11px] text-slate-500">Alle Branchenlösungen</p>
+                            </div>
+                        </a>
+                        <a href="driver.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-bicycle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Fahrer Portal</p>
+                                <p class="text-[11px] text-slate-500">Liefer-Partner werden</p>
+                            </div>
+                        </a>
+                        <a href="how-it-works.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">So funktioniert's</p>
+                                <p class="text-[11px] text-slate-500">Unser Prozess erklärt</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dropdown: Entwickler -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Entwickler</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="api-docs.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">API Referenz</p>
+                                <p class="text-[11px] text-slate-500">Dokumentation & Endpunkte</p>
+                            </div>
+                        </a>
+                        <a href="sdk.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">SDKs & Libraries</p>
+                                <p class="text-[11px] text-slate-500">Node, Python, Go</p>
+                            </div>
+                        </a>
+                        <a href="status.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-signal"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">System Status</p>
+                                <p class="text-[11px] text-slate-500">Live Uptime-Monitor</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!--<a href="pricing.html"
+                    class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition">Preise</a>
+            -->
+                <!-- Dropdown: Unternehmen -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Unternehmen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full right-0 w-64 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="about.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition">
+                            <i class="fas fa-users text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Über uns</span>
+                        </a>
+                        <a href="contact.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition mt-1">
+                            <i class="fas fa-envelope text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Kontakt</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTAs & Burger -->
+            <div class="flex items-center space-x-4 z-[110]">
+                <!--<button
+                    class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-blue-600 transition shadow-xl shadow-slate-200">
+                    Get Started
+                </button>-->
+                <button id="burger-btn"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 transition">
+                    <i class="fas fa-bars" id="burger-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile Menu Overlay -->
+    <div id="mobile-menu" class="fixed inset-0 z-[90] bg-white translate-x-full lg:hidden">
+        <div class="flex flex-col h-full pt-24 px-8 pb-10 overflow-y-auto">
+            <div class="mb-8">
+                <p class="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-4">Navigation</p>
+                <div class="space-y-4">
+                    <a href="index.html" class="flex items-center space-x-4 text-xl font-bold text-slate-900">
+                        <i class="fas fa-bicycle text-blue-600 w-8"></i>
+                        <span>Fahrer Portal</span>
+                    </a>
+                    <a href="api-docs.html" class="flex items-center space-x-4 text-xl font-bold text-blue-600">
+                        <i class="fas fa-code w-8"></i>
+                        <span>API Dokumentation</span>
+                    </a>
+                    <a href="#" class="flex items-center space-x-4 text-xl font-bold text-slate-900">
+                        <i class="fas fa-store text-emerald-600 w-8"></i>
+                        <span>Partner Portal</span>
+                    </a>
+                </div>
+            </div>
+
+            <div class="mt-auto border-t border-slate-100 pt-8 space-y-4">
+                <button class="w-full bg-slate-900 text-white py-4 rounded-2xl font-bold">Konto erstellen</button>
+                <button class="w-full bg-slate-100 text-slate-600 py-4 rounded-2xl font-bold">Anmelden</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="flex pt-20">
+        <!-- Sidebar (Desktop only) -->
+        <aside
+            class="w-72 fixed h-[calc(100vh-80px)] overflow-y-auto border-r border-slate-100 hidden lg:block p-8 custom-scrollbar bg-slate-50/30">
+            <div class="mb-10">
+                <h5 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">Grundlagen</h5>
+                <ul class="space-y-1 text-sm font-medium text-slate-600">
+                    <li><a href="#einfuehrung" class="sidebar-link block p-2 rounded-lg">Einführung</a></li>
+                    <li><a href="#authentifizierung" class="sidebar-link block p-2 rounded-lg">Authentifizierung</a>
+                    </li>
+                    <li><a href="#ratenbegrenzung" class="sidebar-link block p-2 rounded-lg">Rate Limiting</a></li>
+                    <li><a href="#pagination" class="sidebar-link block p-2 rounded-lg">Pagination</a></li>
+                </ul>
+            </div>
+            <div class="mb-10">
+                <h5 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">Kern-Ressourcen</h5>
+                <ul class="space-y-1 text-sm font-medium text-slate-600">
+                    <li><a href="#orders-create"
+                            class="sidebar-link block p-2 rounded-lg flex items-center justify-between"><span>Bestellung
+                                erstellen</span> <span
+                                class="endpoint-badge bg-emerald-100 text-emerald-700">POST</span></a></li>
+                    <li><a href="#orders-list"
+                            class="sidebar-link block p-2 rounded-lg flex items-center justify-between"><span>Bestellungen
+                                abrufen</span> <span class="endpoint-badge bg-blue-100 text-blue-700">GET</span></a>
+                    </li>
+                    <li><a href="#tracking"
+                            class="sidebar-link block p-2 rounded-lg flex items-center justify-between"><span>Echtzeit-Tracking</span>
+                            <span class="endpoint-badge bg-purple-100 text-purple-700">WS</span></a></li>
+                </ul>
+            </div>
+            <div class="mb-10">
+                <h5 class="text-[10px] font-black uppercase tracking-[0.2em] text-slate-400 mb-5">Advanced</h5>
+                <ul class="space-y-1 text-sm font-medium text-slate-600">
+                    <li><a href="#webhooks" class="sidebar-link block p-2 rounded-lg">Webhooks</a></li>
+                    <li><a href="#idempotency" class="sidebar-link block p-2 rounded-lg">Idempotenz</a></li>
+                    <li><a href="#batch" class="sidebar-link block p-2 rounded-lg">Batch Processing</a></li>
+                </ul>
+            </div>
+        </aside>
+
+        <!-- Content -->
+        <main class="flex-1 lg:ml-72 p-8 lg:p-20 max-w-5xl">
+
+            <!-- Section: Einführung -->
+            <section id="einfuehrung" class="mb-32">
+                <h1 class="text-5xl font-black mb-8 tracking-tighter">Entwickler Dokumentation</h1>
+                <p class="text-xl text-slate-600 leading-relaxed mb-10">
+                    Integrieren Sie die leistungsstarke Logistik-Engine von BestellDirekt in Ihre Applikation. Unsere
+                    RESTful API ermöglicht es Ihnen, Lieferungen in über 500 Städten weltweit zu steuern, zu verfolgen
+                    und zu optimieren.
+                </p>
+                <div class="grid md:grid-cols-2 gap-6 mb-12">
+                    <div class="p-6 border border-slate-100 rounded-2xl bg-slate-50">
+                        <i class="fas fa-bolt text-blue-600 mb-4 block text-xl"></i>
+                        <h4 class="font-bold mb-2 text-sm uppercase tracking-wide">Schnelle Integration</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Mit unseren SDKs für Node.js, Python und Ruby
+                            sind Sie in weniger als 15 Minuten startklar.</p>
+                    </div>
+                    <div class="p-6 border border-slate-100 rounded-2xl bg-slate-50">
+                        <i class="fas fa-shield-alt text-emerald-600 mb-4 block text-xl"></i>
+                        <h4 class="font-bold mb-2 text-sm uppercase tracking-wide">Enterprise Sicherheit</h4>
+                        <p class="text-xs text-slate-500 leading-relaxed">Ende-zu-Ende Verschlüsselung und granulare
+                            Berechtigungen für Ihre API-Keys.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Authentifizierung -->
+            <section id="authentifizierung" class="mb-32">
+                <h2 class="text-3xl font-black mb-6 tracking-tight">Authentifizierung</h2>
+                <p class="text-slate-600 mb-8 font-medium">
+                    Jede Anfrage erfordert einen Bearer-Token im Authorization-Header. API-Keys können im
+                    Partner-Dashboard erstellt und mit Rollen versehen werden.
+                </p>
+                <div class="code-container">
+                    <pre><code>Authorization: Bearer <span class="text-emerald-400">bd_live_51Px...your_secure_api_token</span>
+Content-Type: application/json</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: Rate Limiting -->
+            <section id="ratenbegrenzung" class="mb-32">
+                <h2 class="text-3xl font-black mb-6 tracking-tight">Rate Limiting</h2>
+                <p class="text-slate-600 mb-8">
+                    Standard-Limits pro Account zur Sicherstellung der Systemintegrität:
+                </p>
+                <div class="grid md:grid-cols-3 gap-6">
+                    <div class="p-6 border border-slate-100 rounded-xl bg-slate-50/50">
+                        <span class="block text-2xl font-black text-slate-900">10.000</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Anfragen / Std.</p>
+                    </div>
+                    <div class="p-6 border border-slate-100 rounded-xl bg-slate-50/50">
+                        <span class="block text-2xl font-black text-slate-900">200</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Burst (Concurrent)</p>
+                    </div>
+                    <div class="p-6 border border-slate-100 rounded-xl bg-slate-50/50">
+                        <span class="block text-2xl font-black text-slate-900">50</span>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase">Websocket Slots</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section: Pagination -->
+            <section id="pagination" class="mb-32">
+                <h2 class="text-3xl font-black mb-6 tracking-tight">Pagination</h2>
+                <p class="text-slate-600 mb-8">
+                    Listen-Endpunkte verwenden ein cursor-basiertes Pagination-System. Verwenden Sie die Parameter <code
+                        class="bg-slate-100 px-1 rounded">limit</code> und <code
+                        class="bg-slate-100 px-1 rounded">after</code>.
+                </p>
+                <div class="code-container">
+                    <div class="flex justify-between items-center mb-4 text-[10px] font-bold text-slate-500">
+                        <span>Antwort-Struktur</span>
+                        <span class="text-blue-400">JSON</span>
+                    </div>
+                    <pre><code>{
+  "data": [...],
+  "has_more": true,
+  "next_cursor": "ord_9182kjs..."
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: POST Create Order -->
+            <section id="orders-create" class="mb-32">
+                <div class="flex items-center space-x-4 mb-6">
+                    <h2 class="text-3xl font-black tracking-tight">Bestellung erstellen</h2>
+                    <span class="endpoint-badge bg-emerald-100 text-emerald-700 px-3 py-1 text-sm">POST /orders</span>
+                </div>
+                <div class="code-container mb-8">
+                    <pre><code>{
+  "pickup_address": "Schillerstr. 10, 80336 München",
+  "delivery_address": "Marienplatz 1, 80331 München",
+  "vehicle_type": "bike",
+  "items": [{ "name": "Paket", "weight_kg": 2 }]
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: GET List Orders -->
+            <section id="orders-list" class="mb-32">
+                <div class="flex items-center space-x-4 mb-6">
+                    <h2 class="text-3xl font-black tracking-tight">Bestellungen abrufen</h2>
+                    <span class="endpoint-badge bg-blue-100 text-blue-700 px-3 py-1 text-sm">GET /orders</span>
+                </div>
+                <p class="text-slate-600 mb-8">
+                    Ruft eine Liste aller Bestellungen ab. Nutzen Sie Query-Parameter wie `status`, um Ergebnisse zu
+                    filtern.
+                </p>
+                <div class="bg-slate-50 rounded-xl p-6 border border-slate-100">
+                    <h5 class="text-[10px] font-bold uppercase text-slate-400 mb-4 tracking-widest">Query Parameter</h5>
+                    <ul class="space-y-4 text-sm">
+                        <li class="flex justify-between border-b border-slate-200 pb-2">
+                            <span class="font-mono font-bold">status</span>
+                            <span class="text-slate-500 italic">Filtert nach "pending", "active", "completed"</span>
+                        </li>
+                        <li class="flex justify-between">
+                            <span class="font-mono font-bold">limit</span>
+                            <span class="text-slate-500 italic">Anzahl Ergebnisse (Standard: 20, Max: 100)</span>
+                        </li>
+                    </ul>
+                </div>
+            </section>
+
+            <!-- Section: Echtzeit-Tracking -->
+            <section id="tracking" class="mb-32">
+                <div class="flex items-center space-x-4 mb-6">
+                    <h2 class="text-3xl font-black tracking-tight">Echtzeit-Tracking</h2>
+                    <span class="endpoint-badge bg-purple-100 text-purple-700 px-3 py-1 text-sm">WSS /tracking</span>
+                </div>
+                <p class="text-slate-600 mb-8">
+                    Verbinden Sie sich per WebSocket, um Live-Koordinaten des Fahrers zu erhalten. Die Verbindung
+                    erfordert Authentifizierung via Token im ersten Payload.
+                </p>
+                <div class="code-container">
+                    <div class="mb-4 text-emerald-400 text-[10px] font-bold">CONNECTED</div>
+                    <pre><code>// Browser / Client
+const socket = new WebSocket('wss://api.bestelldirekt.de/v2/tracking');
+socket.send(JSON.stringify({ "action": "subscribe", "order_id": "ord_123" }));
+
+// Server Response (Live Update)
+{
+  "order_id": "ord_123",
+  "lat": 48.137154,
+  "lng": 11.576124,
+  "speed_kmh": 18.5,
+  "heading": 94
+}</code></pre>
+                </div>
+            </section>
+
+            <!-- Section: Idempotency -->
+            <section id="idempotency" class="mb-32">
+                <h2 class="text-3xl font-black mb-6 tracking-tight">Idempotenz</h2>
+                <p class="text-slate-600 mb-8">
+                    Vermeiden Sie doppelte Buchungen bei Netzwerkfehlern. Senden Sie den Header <code
+                        class="bg-slate-100 px-1 rounded">Idempotency-Key</code> mit einem eindeutigen String (z.B. UUID
+                    v4).
+                </p>
+                <div class="code-container">
+                    <pre><code>POST /v2/orders
+Idempotency-Key: <span class="text-emerald-400">f47ac10b-58cc-4372-a567-0e02b2c3d479</span></code></pre>
+                </div>
+            </section>
+
+            <!-- Section: Batch Processing -->
+            <section id="batch" class="mb-32">
+                <div class="flex items-center space-x-4 mb-6">
+                    <h2 class="text-3xl font-black tracking-tight">Batch Processing</h2>
+                    <span class="endpoint-badge bg-orange-100 text-orange-700 px-3 py-1 text-sm">POST /batch</span>
+                </div>
+                <div class="code-container">
+                    <pre><code>{
+  "operations": [
+    { "method": "POST", "path": "/orders", "body": {...} },
+    { "method": "POST", "path": "/orders", "body": {...} }
+  ]
+}</code></pre>
+                </div>
+            </section>
+
+            <footer
+                class="pt-12 border-t border-slate-100 flex justify-between items-center text-[10px] font-black text-slate-400 uppercase tracking-[0.2em]">
+                <p>&copy; 2025 BestellDirekt</p>
+                <div class="flex space-x-6">
+                    <a href="legal/privacy.html" class="hover:text-blue-600">Datenschutz</a>
+                    <a href="legal/imprint.html" class="hover:text-blue-600">Impressum</a>
+                    <a href="legal/terms.html" class="hover:text-blue-600">AGB</a>
+                    <a href="legal/cookies.html" class="hover:text-blue-600">Cookies</a>
+                </div>
+            </footer>
+
+        </main>
+    </div>
+
+    <!-- Navigation & Scroll Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Mobile Menu Toggle
+            const burgerBtn = document.getElementById('burger-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            let isMenuOpen = false;
+
+            burgerBtn.addEventListener('click', () => {
+                isMenuOpen = !isMenuOpen;
+                if (isMenuOpen) {
+                    mobileMenu.style.transform = 'translateX(0)';
+                    burgerBtn.innerHTML = '<i class="fas fa-times text-xl"></i>';
+                } else {
+                    mobileMenu.style.transform = 'translateX(100%)';
+                    burgerBtn.innerHTML = '<i class="fas fa-bars text-xl"></i>';
+                }
+            });
+
+            // Active Section Tracking
+            const sections = document.querySelectorAll("section");
+            const navLinks = document.querySelectorAll(".sidebar-link");
+
+            window.addEventListener("scroll", () => {
+                let current = "";
+                sections.forEach((section) => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 150) {
+                        current = section.getAttribute("id");
+                    }
+                });
+
+                navLinks.forEach((link) => {
+                    link.classList.remove("active");
+                    if (link.getAttribute("href") === `#${current}`) {
+                        link.classList.add("active");
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+
+</html>

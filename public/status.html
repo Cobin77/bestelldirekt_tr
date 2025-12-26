@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>System Status | Echtzeit-Verfügbarkeit | BestellDirekt</title>
+    <meta name="description"
+        content="Prüfen Sie den aktuellen Status der BestellDirekt Systeme. Live-Updates zur Verfügbarkeit von API, Dashboard und Logistik-Services für maximale Transparenz.">
+    <meta name="keywords"
+        content="System Status, Uptime, Verfügbarkeit, BestellDirekt Status, API Status, Logistik Monitoring">
+    <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" href="../src/assets/images/favicons/favicon.png">
+    <link rel="apple-touch-icon" href="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <meta property="og:title" content="BestellDirekt System Status">
+    <meta property="og:description" content="Aktuelle Informationen zur Performance und Verfügbarkeit unserer Dienste.">
+    <meta property="og:image" content="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --brand-blue: #2563eb;
+            --brand-dark: #0f172a;
+            --status-green: #10b981;
+            --status-yellow: #f59e0b;
+            --status-red: #ef4444;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--brand-dark);
+            line-height: 1.7;
+        }
+
+        .status-pulse {
+            animation: pulse 2s infinite;
+        }
+
+        /* Navbar Start */
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu Side-Slide */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Mobile Submenu Toggle */
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .mobile-submenu.open {
+            max-height: 500px;
+        }
+
+        /* Navbar End */
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                opacity: 1;
+            }
+
+            50% {
+                transform: scale(1.5);
+                opacity: 0.5;
+            }
+
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .uptime-bar {
+            height: 32px;
+            width: 4px;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .uptime-bar:hover {
+            transform: scaleY(1.2);
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body class="bg-slate-50">
+
+    <!-- Footer / Navigation -->
+    <nav
+        class="fixed w-full z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-100 h-20 flex items-center px-6">
+        <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+
+            <!-- Branding -->
+            <a href="index.html" class="flex items-center space-x-2 shrink-0 z-[110]">
+                <div
+                    class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-black tracking-tighter uppercase leading-none">Bestell<span
+                            class="text-blue-600">Direkt</span></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Global
+                        Logistics</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu (Hidden on Mobile) -->
+            <div class="hidden lg:flex items-center space-x-1">
+                <!-- Dropdown: Lösungen -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Lösungen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="solutions.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Übersicht</p>
+                                <p class="text-[11px] text-slate-500">Alle Branchenlösungen</p>
+                            </div>
+                        </a>
+                        <a href="driver.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-bicycle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Fahrer Portal</p>
+                                <p class="text-[11px] text-slate-500">Liefer-Partner werden</p>
+                            </div>
+                        </a>
+                        <a href="how-it-works.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">So funktioniert's</p>
+                                <p class="text-[11px] text-slate-500">Unser Prozess erklärt</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dropdown: Entwickler -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Entwickler</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="api-docs.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">API Referenz</p>
+                                <p class="text-[11px] text-slate-500">Dokumentation & Endpunkte</p>
+                            </div>
+                        </a>
+                        <a href="sdk.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">SDKs & Libraries</p>
+                                <p class="text-[11px] text-slate-500">Node, Python, Go</p>
+                            </div>
+                        </a>
+                        <a href="status.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-signal"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">System Status</p>
+                                <p class="text-[11px] text-slate-500">Live Uptime-Monitor</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!--<a href="pricing.html"
+                    class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition">Preise</a>
+            -->
+                <!-- Dropdown: Unternehmen -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Unternehmen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full right-0 w-64 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="about.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition">
+                            <i class="fas fa-users text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Über uns</span>
+                        </a>
+                        <a href="contact.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition mt-1">
+                            <i class="fas fa-envelope text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Kontakt</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTAs & Burger -->
+            <div class="flex items-center space-x-4 z-[110]">
+                <!--<button
+                    class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-blue-600 transition shadow-xl shadow-slate-200">
+                    Get Started
+                </button>-->
+                <button id="burger-btn"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 transition">
+                    <i class="fas fa-bars" id="burger-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-5xl mx-auto px-6 pt-32 pb-20">
+
+        <!-- Global Status Header -->
+        <div
+            class="bg-white rounded-[2.5rem] p-8 md:p-12 shadow-sm border border-slate-100 mb-12 flex flex-col md:flex-row items-center justify-between text-center md:text-left">
+            <div>
+                <div class="flex items-center justify-center md:justify-start space-x-3 mb-4">
+                    <div class="w-3 h-3 bg-emerald-500 rounded-full status-pulse"></div>
+                    <span class="text-emerald-600 font-bold uppercase tracking-widest text-sm">Alle Systeme
+                        betriebsbereit</span>
+                </div>
+                <h1 class="text-4xl font-black tracking-tight mb-2">System Status</h1>
+                <p class="text-slate-500">Aktualisiert am 20. Dezember 2025, 20:05 Uhr</p>
+            </div>
+            <div class="mt-8 md:mt-0">
+                <div class="text-center md:text-right">
+                    <span class="block text-4xl font-black text-blue-600">99.98%</span>
+                    <span class="text-[10px] font-bold uppercase tracking-widest text-slate-400">Uptime letzte 90
+                        Tage</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Component List -->
+        <div class="bg-white rounded-[2.5rem] shadow-sm border border-slate-100 overflow-hidden mb-12">
+            <div class="p-8 border-b border-slate-50">
+                <h2 class="text-xl font-bold">System Komponenten</h2>
+            </div>
+            <div class="divide-y divide-slate-50">
+                <!-- API -->
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="font-semibold">Core API</span>
+                        <span class="text-emerald-500 font-bold text-sm uppercase tracking-wider">Betriebsbereit</span>
+                    </div>
+                    <div class="flex gap-1">
+                        <script>
+                            for (let i = 0; i < 60; i++) {
+                                let color = i === 45 ? 'bg-amber-400' : 'bg-emerald-500';
+                                document.write(`<div class="uptime-bar flex-1 ${color} opacity-80" title="Tag ${60 - i}"></div>`);
+                            }
+                        </script>
+                    </div>
+                    <div
+                        class="flex justify-between mt-4 text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+                        <span>vor 60 Tagen</span>
+                        <span>Heute</span>
+                    </div>
+                </div>
+
+                <!-- Web Dashboard -->
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="font-semibold">Business Dashboard</span>
+                        <span class="text-emerald-500 font-bold text-sm uppercase tracking-wider">Betriebsbereit</span>
+                    </div>
+                    <div class="flex gap-1">
+                        <script>
+                            for (let i = 0; i < 60; i++) {
+                                document.write(`<div class="uptime-bar flex-1 bg-emerald-500 opacity-80"></div>`);
+                            }
+                        </script>
+                    </div>
+                </div>
+
+                <!-- Driver App Backend -->
+                <div class="p-8">
+                    <div class="flex items-center justify-between mb-6">
+                        <span class="font-semibold">Fahrer-Netzwerk (WebSockets)</span>
+                        <span class="text-emerald-500 font-bold text-sm uppercase tracking-wider">Betriebsbereit</span>
+                    </div>
+                    <div class="flex gap-1">
+                        <script>
+                            for (let i = 0; i < 60; i++) {
+                                document.write(`<div class="uptime-bar flex-1 bg-emerald-500 opacity-80"></div>`);
+                            }
+                        </script>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Incidents -->
+        <div class="space-y-6">
+            <h2 class="text-xl font-bold px-4">Vergangene Vorfälle</h2>
+
+            <!-- Incident 1 -->
+            <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-blue-500"></div>
+                <div class="mb-4">
+                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">18. Dezember
+                        2025</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Geplante Wartungsarbeiten: API Gateway</h3>
+                <p class="text-slate-500 text-sm mb-6 leading-relaxed">
+                    Wir haben planmäßige Optimierungen an unserem API-Gateway durchgeführt, um die Latenzzeiten für
+                    internationale Anfragen zu verringern. Während dieser Zeit kam es zu einer kurzen Unterbrechung von
+                    ca. 2 Minuten.
+                </p>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-blue-500 rounded-full"></span>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-blue-600">Abgeschlossen</span>
+                </div>
+            </div>
+
+            <!-- Incident 2 -->
+            <div class="bg-white rounded-[2rem] p-8 border border-slate-100 shadow-sm relative overflow-hidden">
+                <div class="absolute top-0 left-0 w-1.5 h-full bg-amber-400"></div>
+                <div class="mb-4">
+                    <span class="text-[10px] font-black uppercase tracking-widest text-slate-400">05. Dezember
+                        2025</span>
+                </div>
+                <h3 class="font-bold text-lg mb-2">Verzögerte Webhook-Zustellung</h3>
+                <p class="text-slate-500 text-sm mb-6 leading-relaxed">
+                    Aufgrund einer hohen Lastspitze kam es bei ca. 5% der Lieferereignisse zu Verzögerungen bei der
+                    Webhook-Benachrichtigung. Das Problem wurde durch Skalierung der Worker-Nodes behoben.
+                </p>
+                <div class="flex items-center space-x-2">
+                    <span class="w-2 h-2 bg-emerald-500 rounded-full"></span>
+                    <span class="text-[11px] font-bold uppercase tracking-widest text-emerald-600">Behoben</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer for Status Page -->
+        <div class="mt-20 pt-12 border-t border-slate-200 flex flex-col md:flex-row justify-between items-center gap-6">
+            <div class="text-center md:text-left">
+                <p class="text-sm text-slate-400 font-medium">Betrieben von BestellDirekt SRE Team</p>
+            </div>
+            <!--<div class="flex space-x-6">
+                <a href="#" class="text-slate-400 hover:text-blue-600 transition"><i class="fab fa-twitter"></i></a>
+                <a href="#" class="text-slate-400 hover:text-blue-600 transition"><i class="fab fa-github"></i></a>
+            </div>-->
+        </div>
+
+    </main>
+
+</body>
+
+</html>

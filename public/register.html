@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Partner-Registrierung | BestellDirekt</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f1f5f9;
+        }
+
+        .step-content {
+            display: none;
+        }
+
+        .step-content.active {
+            display: block;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .progress-bar {
+            transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #2563eb;
+            box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+        }
+
+        .custom-scroll::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .custom-scroll::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+
+        .custom-scroll::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        .loading-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(255, 255, 255, 0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+
+<body class="min-h-screen flex items-center justify-center p-4 md:p-8">
+
+    <div id="loading" class="loading-overlay">
+        <div class="flex flex-col items-center">
+            <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+            <p class="mt-4 text-slate-600 font-medium">Daten werden sicher übertragen...</p>
+        </div>
+    </div>
+
+    <div
+        class="max-w-6xl w-full grid lg:grid-cols-12 bg-white rounded-[2.5rem] shadow-2xl overflow-hidden min-h-[700px]">
+
+        <!-- Left Sidebar: Progress & Info -->
+        <div
+            class="lg:col-span-4 bg-slate-900 p-8 md:p-12 text-white flex flex-col justify-between relative overflow-hidden">
+            <div class="absolute top-0 right-0 w-64 h-64 bg-blue-600/10 rounded-full -mr-32 -mt-32 blur-3xl"></div>
+
+            <div>
+                <div class="flex items-center gap-3 mb-12">
+                    <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center">
+                        <i class="fas fa-box-open text-white"></i>
+                    </div>
+                    <span class="text-xl font-black tracking-tight uppercase">Bestell<span
+                            class="text-blue-600">Direkt</span></span>
+                </div>
+
+                <h1 class="text-3xl font-black mb-6 leading-tight uppercase">Werde Teil des <br><span
+                        class="text-blue-500">Netzwerks.</span></h1>
+
+                <!-- Stepper UI -->
+                <div class="space-y-6 mt-12 relative z-10">
+                    <div class="flex items-center gap-4 step-indicator" data-step="1">
+                        <div
+                            class="w-8 h-8 rounded-full border-2 border-blue-600 flex items-center justify-center text-xs font-bold transition-colors">
+                            1</div>
+                        <span class="text-sm font-semibold text-slate-400">Unternehmensdaten</span>
+                    </div>
+                    <div class="flex items-center gap-4 step-indicator" data-step="2">
+                        <div
+                            class="w-8 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 transition-colors">
+                            2</div>
+                        <span class="text-sm font-semibold text-slate-500">Kontaktperson</span>
+                    </div>
+                    <div class="flex items-center gap-4 step-indicator" data-step="3">
+                        <div
+                            class="w-8 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 transition-colors">
+                            3</div>
+                        <span class="text-sm font-semibold text-slate-500">Logistik & Angebot</span>
+                    </div>
+                    <div class="flex items-center gap-4 step-indicator" data-step="4">
+                        <div
+                            class="w-8 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 transition-colors">
+                            4</div>
+                        <span class="text-sm font-semibold text-slate-500">Verifizierung</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="mt-12">
+                <p class="text-slate-500 text-xs leading-relaxed">
+                    © 2025 BestellDirekt UG. <br>
+                    Sichere SSL-Verschlüsselung aktiv.
+                </p>
+            </div>
+        </div>
+
+        <!-- Right Side: Form Content -->
+        <div class="lg:col-span-8 p-8 md:p-12 flex flex-col relative h-full">
+
+            <!-- Top Header in Form -->
+            <div class="flex justify-between items-center mb-8">
+                <div>
+                    <p class="text-blue-600 text-xs font-bold uppercase tracking-widest mb-1">Schritt <span
+                            id="current-step-num">1</span> von 4</p>
+                    <h2 id="step-title" class="text-2xl font-black text-slate-900 uppercase">Grunddaten</h2>
+                </div>
+                <div class="hidden md:block">
+                    <div class="w-48 h-2 bg-slate-100 rounded-full overflow-hidden">
+                        <div id="progress-bar" class="h-full bg-blue-600 progress-bar" style="width: 25%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Form Content Area -->
+            <form id="partner-form" class="flex-grow overflow-y-auto custom-scroll pr-4 -mr-4">
+
+                <!-- Step 1: Company Info -->
+                <div class="step-content active" id="step-1">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Name des Unternehmens
+                                *</label>
+                            <input type="text" name="companyName" required
+                                placeholder="z.B. Logistik-Zentrum Müller GmbH"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Rechtsform *</label>
+                            <select name="legalForm"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none appearance-none">
+                                <option>GmbH</option>
+                                <option>UG (haftungsbeschränkt)</option>
+                                <option>Einzelunternehmen</option>
+                                <option>GbR</option>
+                                <option>AG</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Gründungsjahr</label>
+                            <input type="number" name="foundedYear" placeholder="z.B. 2018"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Straße & Hausnummer
+                                *</label>
+                            <input type="text" name="address" required placeholder="Musterstraße 42"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">PLZ *</label>
+                            <input type="text" name="zip" required placeholder="10115"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Stadt *</label>
+                            <input type="text" name="city" required placeholder="Berlin"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 2: Contact Person -->
+                <div class="step-content" id="step-2">
+                    <div class="grid md:grid-cols-2 gap-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Vorname *</label>
+                            <input type="text" name="contactFirstName" required placeholder="Max"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Nachname *</label>
+                            <input type="text" name="contactLastName" required placeholder="Mustermann"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Geschäftliche E-Mail
+                                *</label>
+                            <input type="email" name="contactEmail" required placeholder="max@unternehmen.de"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Telefonnummer *</label>
+                            <input type="tel" name="contactPhone" required placeholder="+49 123 456789"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div class="col-span-2">
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Position im
+                                Unternehmen</label>
+                            <input type="text" name="contactPosition" placeholder="z.B. Geschäftsführer, Logistikleiter"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 3: Logistics & Offer -->
+                <div class="step-content" id="step-3">
+                    <div class="space-y-6">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Hauptsächliche
+                                Warenkategorien *</label>
+                            <div class="grid grid-cols-2 gap-3">
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer border border-transparent hover:border-blue-200 transition">
+                                    <input type="checkbox" name="categories" value="Electronics"
+                                        class="w-4 h-4 text-blue-600 rounded">
+                                    <span class="text-sm font-medium text-slate-700">Elektronik</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer border border-transparent hover:border-blue-200 transition">
+                                    <input type="checkbox" name="categories" value="Fashion"
+                                        class="w-4 h-4 text-blue-600 rounded">
+                                    <span class="text-sm font-medium text-slate-700">Mode</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer border border-transparent hover:border-blue-200 transition">
+                                    <input type="checkbox" name="categories" value="Food"
+                                        class="w-4 h-4 text-blue-600 rounded">
+                                    <span class="text-sm font-medium text-slate-700">Lebensmittel</span>
+                                </label>
+                                <label
+                                    class="flex items-center gap-3 p-3 bg-slate-50 rounded-xl cursor-pointer border border-transparent hover:border-blue-200 transition">
+                                    <input type="checkbox" name="categories" value="Industrial"
+                                        class="w-4 h-4 text-blue-600 rounded">
+                                    <span class="text-sm font-medium text-slate-700">Industrie</span>
+                                </label>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Lagerkapazität (in
+                                m²)</label>
+                            <input type="number" name="storageSize" placeholder="z.B. 5000"
+                                class="w-full bg-slate-50 border border-slate-200 rounded-xl px-4 py-3 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Bietet ihr
+                                Expressversand an?</label>
+                            <div class="flex gap-4">
+                                <label class="flex-1">
+                                    <input type="radio" name="expressShipping" value="yes" class="hidden peer">
+                                    <div
+                                        class="text-center p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer peer-checked:bg-blue-600 peer-checked:text-white transition font-bold text-sm">
+                                        Ja</div>
+                                </label>
+                                <label class="flex-1">
+                                    <input type="radio" name="expressShipping" value="no" class="hidden peer" checked>
+                                    <div
+                                        class="text-center p-3 bg-slate-50 border border-slate-200 rounded-xl cursor-pointer peer-checked:bg-blue-600 peer-checked:text-white transition font-bold text-sm">
+                                        Nein</div>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Step 4: Verification -->
+                <div class="step-content" id="step-4">
+                    <div class="space-y-6">
+                        <div class="bg-blue-50 border border-blue-100 p-6 rounded-2xl flex items-start gap-4">
+                            <i class="fas fa-shield-alt text-2xl text-blue-600 mt-1"></i>
+                            <div>
+                                <h4 class="font-bold text-slate-900 mb-1">Fast geschafft!</h4>
+                                <p class="text-sm text-slate-600 leading-relaxed">Bitte bestätige die folgenden
+                                    Bedingungen, um deine Registrierung abzuschließen. Ein Mitarbeiter wird deine Daten
+                                    innerhalb von 48h prüfen.</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <label class="flex items-start gap-4 cursor-pointer">
+                                <input type="checkbox" required name="termsAgreed"
+                                    class="mt-1 w-5 h-5 text-blue-600 rounded">
+                                <span class="text-sm text-slate-600 leading-relaxed">Ich akzeptiere die <a
+                                        href="partner-agreement.html" target="_blank"
+                                        class="text-blue-600 font-bold underline">Partner-Vereinbarung</a> sowie die <a
+                                        href="terms.html" target="_blank"
+                                        class="text-blue-600 font-bold underline">AGB</a> von BestellDirekt.</span>
+                            </label>
+                            <label class="flex items-start gap-4 cursor-pointer">
+                                <input type="checkbox" required name="privacyAgreed"
+                                    class="mt-1 w-5 h-5 text-blue-600 rounded">
+                                <span class="text-sm text-slate-600 leading-relaxed">Ich habe die <a href="privacy.html"
+                                        target="_blank"
+                                        class="text-blue-600 font-bold underline">Datenschutzerklärung</a> gelesen und
+                                    stimme der Verarbeitung meiner Daten zu.</span>
+                            </label>
+                            <label class="flex items-start gap-4 cursor-pointer">
+                                <input type="checkbox" name="newsletter" class="mt-1 w-5 h-5 text-blue-600 rounded">
+                                <span class="text-sm text-slate-600 leading-relaxed">Haltet mich über Plattform-Updates
+                                    und neue Partner-Features auf dem Laufenden.</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Navigation Buttons -->
+            <div
+                class="mt-10 pt-8 border-t border-slate-100 flex justify-between items-center bg-white sticky bottom-0">
+                <button id="prev-btn"
+                    class="hidden px-6 py-3 text-sm font-bold text-slate-500 hover:text-slate-900 transition flex items-center gap-2">
+                    <i class="fas fa-arrow-left"></i> Zurück
+                </button>
+                <div id="spacer" class="flex-grow"></div>
+                <button id="next-btn"
+                    class="bg-blue-600 text-white px-10 py-4 rounded-2xl font-black text-sm uppercase tracking-widest hover:bg-blue-700 transition shadow-xl shadow-blue-200 flex items-center gap-3">
+                    <span id="next-btn-text">Weiter</span>
+                    <i class="fas fa-chevron-right text-xs"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Firebase SDKs -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-firestore.js";
+        import { getAuth, signInAnonymously, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/11.1.0/firebase-auth.js";
+
+        // Firebase Configuration (from user)
+        const firebaseConfig = {
+            apiKey: "AIzaSyAgL5egcS9pSc43hDGC2FyfNvxQvwlxFN4",
+            authDomain: "bestelldirekt-e3be2.firebaseapp.com",
+            projectId: "bestelldirekt-e3be2",
+            storageBucket: "bestelldirekt-e3be2.firebasestorage.app",
+            messagingSenderId: "857285469831",
+            appId: "1:857285469831:web:983162d26befb17c937a22",
+            measurementId: "G-FKLZVWD2B8"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+
+        // App ID for Firestore paths (Rule 1)
+        const appId = "bestelldirekt-e3be2";
+
+        let currentStep = 1;
+        const totalSteps = 4;
+        let currentUser = null;
+
+        // Auth Logic (Rule 3)
+        const initAuth = async () => {
+            try {
+                await signInAnonymously(auth);
+            } catch (error) {
+                console.error("Auth error:", error);
+            }
+        };
+        initAuth();
+
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+        });
+
+        // UI References
+        const nextBtn = document.getElementById('next-btn');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtnText = document.getElementById('next-btn-text');
+        const progressBar = document.getElementById('progress-bar');
+        const currentStepNum = document.getElementById('current-step-num');
+        const stepTitle = document.getElementById('step-title');
+        const form = document.getElementById('partner-form');
+        const loadingOverlay = document.getElementById('loading');
+
+        const stepTitles = [
+            "Grunddaten",
+            "Kontaktperson",
+            "Logistik & Angebot",
+            "Verifizierung"
+        ];
+
+        // Navigation Logic
+        nextBtn.addEventListener('click', async () => {
+            if (currentStep < totalSteps) {
+                if (validateCurrentStep()) {
+                    currentStep++;
+                    updateUI();
+                }
+            } else {
+                // Finale Submission
+                if (validateCurrentStep()) {
+                    await submitRegistration();
+                }
+            }
+        });
+
+        prevBtn.addEventListener('click', () => {
+            if (currentStep > 1) {
+                currentStep--;
+                updateUI();
+            }
+        });
+
+        function validateCurrentStep() {
+            const currentFields = document.getElementById(`step-${currentStep}`).querySelectorAll('[required]');
+            let valid = true;
+            currentFields.forEach(field => {
+                if (!field.value || (field.type === 'checkbox' && !field.checked)) {
+                    field.classList.add('border-red-500');
+                    valid = false;
+                } else {
+                    field.classList.remove('border-red-500');
+                }
+            });
+            return valid;
+        }
+
+        function updateUI() {
+            // Steps
+            document.querySelectorAll('.step-content').forEach(s => s.classList.remove('active'));
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+
+            // Indicators
+            document.querySelectorAll('.step-indicator').forEach(ind => {
+                const step = parseInt(ind.dataset.step);
+                const circle = ind.querySelector('div');
+                const text = ind.querySelector('span');
+
+                if (step === currentStep) {
+                    circle.className = "w-8 h-8 rounded-full border-2 border-blue-600 flex items-center justify-center text-xs font-bold text-white bg-blue-600 transition-all";
+                    text.className = "text-sm font-bold text-white";
+                } else if (step < currentStep) {
+                    circle.className = "w-8 h-8 rounded-full border-2 border-green-500 bg-green-500 flex items-center justify-center text-xs font-bold text-white transition-all";
+                    circle.innerHTML = '<i class="fas fa-check"></i>';
+                    text.className = "text-sm font-semibold text-slate-500";
+                } else {
+                    circle.className = "w-8 h-8 rounded-full border-2 border-slate-700 flex items-center justify-center text-xs font-bold text-slate-500 transition-all";
+                    circle.innerText = step;
+                    text.className = "text-sm font-semibold text-slate-500";
+                }
+            });
+
+            // Buttons & Progress
+            prevBtn.classList.toggle('hidden', currentStep === 1);
+            nextBtnText.innerText = currentStep === totalSteps ? 'Jetzt Registrieren' : 'Weiter';
+            progressBar.style.width = `${(currentStep / totalSteps) * 100}%`;
+            currentStepNum.innerText = currentStep;
+            stepTitle.innerText = stepTitles[currentStep - 1];
+
+            // Scroll to top of form
+            form.scrollTop = 0;
+        }
+
+        async function submitRegistration() {
+            if (!currentUser) {
+                alert("Authentifizierung fehlgeschlagen. Bitte laden Sie die Seite neu.");
+                return;
+            }
+
+            loadingOverlay.style.display = 'flex';
+
+            const formData = new FormData(form);
+            const data = Object.fromEntries(formData.entries());
+
+            // Handle multiple categories
+            data.categories = Array.from(formData.getAll('categories'));
+
+            // Add metadata
+            data.createdAt = serverTimestamp();
+            data.status = 'pending_review';
+            data.userId = currentUser.uid;
+
+            try {
+                // Firestore Path Rule 1 & Rule 3
+                const registrationsRef = collection(db, 'artifacts', appId, 'public', 'data', 'registrations');
+                await addDoc(registrationsRef, data);
+
+                // Success Redirect
+                window.location.href = 'registration-success.html';
+            } catch (error) {
+                console.error("Submission error:", error);
+                loadingOverlay.style.display = 'none';
+                alert("Es gab einen Fehler bei der Übertragung. Bitte versuchen Sie es erneut.");
+            }
+        }
+    </script>
+
+</body>
+
+</html>

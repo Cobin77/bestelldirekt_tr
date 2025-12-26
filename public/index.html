@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>BestellDirekt Business | Logistik-Lösungen für Unternehmen</title>
+    <meta name="description"
+        content="BestellDirekt Business bietet intelligente Logistik, Lagerhaltung und Expressversand. Maximieren Sie Ihre Effizienz mit unseren maßgeschneiderten Lösungen.">
+    <meta name="keywords" content="Logistik, Business, Versand, Lagerhaltung, BestellDirekt">
+    <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" href="../src/assets/images/favicons/favicon.png">
+    <link rel="apple-touch-icon" href="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <meta property="og:title" content="BestellDirekt Business">
+    <meta property="og:description" content="Intelligente Logistik-Lösungen für Ihr Unternehmen.">
+    <meta property="og:image" content="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --brand-blue: #2563eb;
+            --brand-dark: #0f172a;
+            --soft-blue: #eff6ff;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--brand-dark);
+            background-color: #ffffff;
+            line-height: 1.6;
+        }
+
+        /* Navbar Start */
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu Side-Slide */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Mobile Submenu Toggle */
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .mobile-submenu.open {
+            max-height: 500px;
+        }
+
+        /* Navbar End */
+
+        .btn-primary {
+            background-color: var(--brand-blue);
+            color: white;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+            transform: translateY(-2px);
+            box-shadow: 0 12px 24px -6px rgba(37, 99, 235, 0.35);
+        }
+
+        .dashboard-mockup {
+            border: 1px solid #e2e8f0;
+            border-radius: 1.5rem;
+            box-shadow: 0 40px 80px -15px rgba(15, 23, 42, 0.08);
+            background: #ffffff;
+        }
+
+        .gradient-heading {
+            background: linear-gradient(135deg, #0f172a 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+            border: 1px solid #f1f5f9;
+        }
+
+        .card-hover:hover {
+            border-color: #dbeafe;
+            background-color: #f8fafc;
+            transform: translateY(-4px);
+        }
+
+        .step-number {
+            font-size: 8rem;
+            line-height: 1;
+            font-weight: 900;
+            color: #eff6ff;
+            z-index: 0;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f8fafc;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Footer Hover Effects */
+        .footer-link {
+            transition: all 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #3b82f6;
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+<body>
+
+    <!-- Footer / Navigation -->
+    <nav
+        class="fixed w-full z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-100 h-20 flex items-center px-6">
+        <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+
+            <!-- Branding -->
+            <a href="index.html" class="flex items-center space-x-2 shrink-0 z-[110]">
+                <div
+                    class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-black tracking-tighter uppercase leading-none">Bestell<span
+                            class="text-blue-600">Direkt</span></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Global
+                        Logistics</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu (Hidden on Mobile) -->
+            <div class="hidden lg:flex items-center space-x-1">
+                <!-- Dropdown: Lösungen -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Lösungen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="solutions.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Übersicht</p>
+                                <p class="text-[11px] text-slate-500">Alle Branchenlösungen</p>
+                            </div>
+                        </a>
+                        <a href="driver.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-bicycle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Fahrer Portal</p>
+                                <p class="text-[11px] text-slate-500">Liefer-Partner werden</p>
+                            </div>
+                        </a>
+                        <a href="how-it-works.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-info-circle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">So funktioniert's</p>
+                                <p class="text-[11px] text-slate-500">Unser Prozess erklärt</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Dropdown: Entwickler -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Entwickler</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="api-docs.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">API Referenz</p>
+                                <p class="text-[11px] text-slate-500">Dokumentation & Endpunkte</p>
+                            </div>
+                        </a>
+                        <a href="sdk.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-box-open"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">SDKs & Libraries</p>
+                                <p class="text-[11px] text-slate-500">Node, Python, Go</p>
+                            </div>
+                        </a>
+                        <a href="status.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-signal"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">System Status</p>
+                                <p class="text-[11px] text-slate-500">Live Uptime-Monitor</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <!--<a href="pricing.html"
+                    class="px-4 py-2 text-sm font-bold text-slate-600 hover:text-blue-600 transition">Preise</a>
+            -->
+                <!-- Dropdown: Unternehmen -->
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Unternehmen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full right-0 w-64 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="about.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition">
+                            <i class="fas fa-users text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Über uns</span>
+                        </a>
+                        <a href="contact.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition mt-1">
+                            <i class="fas fa-envelope text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Kontakt</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- CTAs & Burger -->
+            <div class="flex items-center space-x-4 z-[110]">
+                <a href="register.html">
+                    <!--<button
+                        class="bg-slate-900 text-white px-6 py-2.5 rounded-full text-xs font-bold hover:bg-blue-600 transition shadow-xl shadow-slate-200">
+                        Get Started
+                    </button>-->
+                </a>
+                <button id="burger-btn"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 transition">
+                    <i class="fas fa-bars" id="burger-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- 1. Hero-Section -->
+    <section class="pt-48 pb-24 relative overflow-hidden bg-white">
+        <div class="max-w-7xl mx-auto px-6 grid lg:grid-cols-2 gap-20 items-center">
+            <div class="z-10">
+                <div
+                    class="inline-flex items-center space-x-2 px-4 py-2 bg-blue-50 text-blue-600 rounded-full text-xs font-bold uppercase tracking-widest mb-8">
+                    <span class="flex h-2 w-2 rounded-full bg-blue-600 animate-pulse"></span>
+                    <span>Intelligente B2B Logistik</span>
+                </div>
+                <h1 class="text-5xl lg:text-[72px] font-black leading-[1.05] mb-8 text-slate-900">
+                    Flexible Logistik für <span class="gradient-heading">dein Unternehmen.</span>
+                </h1>
+                <p class="text-xl text-slate-500 mb-10 leading-relaxed max-w-xl">
+                    BestellDirekt vermittelt qualifizierte Fahrer & sorgt für zuverlässige Auslieferungen – ohne
+                    Fixkosten, ohne Stress und voll skalierbar.
+                </p>
+                <div class="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-6">
+                    <a href="register.html"
+                        class="btn-primary px-12 py-5 rounded-2xl font-black text-lg shadow-2xl inline-block">
+                        Unternehmen registrieren
+                    </a>
+
+                    <!--<button
+                        class="px-8 py-5 rounded-2xl font-bold text-slate-600 hover:bg-slate-50 transition flex items-center justify-center">
+                        <i class="fas fa-play-circle mr-3 text-blue-600"></i> Demo ansehen
+                    </button>-->
+                </div>
+                <div class="mt-12 flex items-center space-x-8">
+                    <!--<div class="flex items-center space-x-4">
+
+                        
+                        <a href="https://de.trustpilot.com/review/bestelldirekt24.de" target="_blank" rel="noopener">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e9/Trustpilot_logo.svg/1200px-Trustpilot_logo.svg.png"
+                                alt="Trustpilot" class="h-6">
+                        </a>
+
+                        
+                        <div class="trustpilot-widget" data-locale="de-DE" data-template-id="53aa8807dec7e10d38f59f32"
+                            data-businessunit-id="68a646bb83fac16f7f141666" data-style-height="24px"
+                            data-style-width="100%" data-theme="light">
+                        </div>
+
+                        <script async
+                            src="https://widget.trustpilot.com/bootstrap/v5/tp.widget.bootstrap.min.js"></script>
+
+
+                    </div>-->
+
+
+                    <!--<div class="h-4 w-px bg-slate-200"></div>-->
+                    <p class="text-[11px] font-bold text-slate-400 uppercase tracking-widest">Über 50
+                        Partner-Unternehmen</p>
+                </div>
+            </div>
+
+            <div class="relative">
+                <!-- Dashboard Mockup -->
+                <div class="dashboard-mockup overflow-hidden rotate-2 hover:rotate-0 transition-transform duration-700">
+                    <div class="bg-slate-50 border-b border-slate-100 p-4 flex items-center justify-between">
+                        <div class="flex space-x-1.5">
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                            <div class="w-2.5 h-2.5 rounded-full bg-slate-200"></div>
+                        </div>
+                        <div
+                            class="bg-white border border-slate-200 px-4 py-1 rounded-md text-[10px] text-slate-400 font-medium">
+                            bestelldirekt.de/dashboard
+                        </div>
+                        <i class="fas fa-user-circle text-slate-300"></i>
+                    </div>
+                    <div class="p-6 bg-white min-h-[400px]">
+                        <div class="grid grid-cols-3 gap-4 mb-8">
+                            <div class="p-4 bg-blue-50 rounded-xl">
+                                <p class="text-[10px] font-bold text-blue-600 uppercase mb-1">Aktive Lieferungen</p>
+                                <p class="text-2xl font-black">24</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Erfolgreich</p>
+                                <p class="text-2xl font-black text-slate-700">1.482</p>
+                            </div>
+                            <div class="p-4 bg-slate-50 rounded-xl">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">Ø Lieferzeit</p>
+                                <p class="text-2xl font-black text-slate-700">28 min</p>
+                            </div>
+                        </div>
+                        <div class="space-y-4">
+                            <div
+                                class="flex items-center justify-between p-4 border border-slate-50 rounded-xl bg-white shadow-sm">
+                                <div class="flex items-center space-x-4">
+                                    <div
+                                        class="w-10 h-10 bg-green-50 text-green-600 rounded-lg flex items-center justify-center text-xs">
+                                        <i class="fas fa-truck"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold">Auftrag #8429</p>
+                                        <p class="text-[10px] text-slate-400">Unterwegs zu: Müllerstr. 12</p>
+                                    </div>
+                                </div>
+                                <span
+                                    class="px-3 py-1 bg-green-100 text-green-700 text-[9px] font-black rounded-full uppercase">Live</span>
+                            </div>
+                            <div class="flex items-center justify-between p-4 border border-slate-50 rounded-xl">
+                                <div class="flex items-center space-x-4 opacity-60">
+                                    <div
+                                        class="w-10 h-10 bg-slate-100 text-slate-400 rounded-lg flex items-center justify-center text-xs">
+                                        <i class="fas fa-clock"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold">Auftrag #8428</p>
+                                        <p class="text-[10px] text-slate-400">Abholung: Lagerzentrum Süd</p>
+                                    </div>
+                                </div>
+                                <span
+                                    class="px-3 py-1 bg-slate-100 text-slate-500 text-[9px] font-black rounded-full uppercase">Geplant</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Floating Elements -->
+                <div
+                    class="absolute -bottom-10 -left-10 bg-white p-6 rounded-3xl shadow-2xl border border-slate-50 animate-bounce transition-all duration-[3000ms] hidden lg:block">
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-blue-600 rounded-2xl flex items-center justify-center text-white">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <p class="text-[10px] font-bold text-slate-400 uppercase">Kosteneinsparung</p>
+                            <p class="text-xl font-black text-blue-600">-32% p.a.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Wie es funktioniert -->
+    <section id="prozess" class="py-24 bg-slate-50 border-y border-slate-100">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="text-center mb-24">
+                <h2 class="text-4xl font-black mb-6">In 4 Schritten zur Auslieferung</h2>
+                <p class="text-slate-500 max-w-2xl mx-auto">Vom Klick bis zur Haustür des Kunden – wir haben den Prozess
+                    perfektioniert, damit du dich auf dein Kerngeschäft konzentrieren kannst.</p>
+            </div>
+
+            <div class="grid md:grid-cols-4 gap-12 relative">
+                <div class="relative group">
+                    <span
+                        class="step-number absolute -top-12 -left-4 opacity-40 group-hover:opacity-60 transition">01</span>
+                    <div class="relative z-10 pt-10">
+                        <div
+                            class="w-14 h-14 bg-white shadow-xl rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-plus-circle text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-3">Auftrag erstellen</h4>
+                        <p class="text-sm text-slate-500">Über unser Dashboard oder API-Schnittstelle einfach die
+                            Lieferdetails eingeben.</p>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <span
+                        class="step-number absolute -top-12 -left-4 opacity-40 group-hover:opacity-60 transition">02</span>
+                    <div class="relative z-10 pt-10">
+                        <div
+                            class="w-14 h-14 bg-white shadow-xl rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-user-check text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-3">Fahrer-Matching</h4>
+                        <p class="text-sm text-slate-500">Unser Algorithmus findet in Sekunden den idealen Fahrer in der
+                            Umgebung.</p>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <span
+                        class="step-number absolute -top-12 -left-4 opacity-40 group-hover:opacity-60 transition">03</span>
+                    <div class="relative z-10 pt-10">
+                        <div
+                            class="w-14 h-14 bg-white shadow-xl rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-shipping-fast text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-3">Sichere Lieferung</h4>
+                        <p class="text-sm text-slate-500">Der Fahrer holt die Ware ab und liefert sie auf dem
+                            schnellsten Weg direkt aus.</p>
+                    </div>
+                </div>
+                <div class="relative group">
+                    <span
+                        class="step-number absolute -top-12 -left-4 opacity-40 group-hover:opacity-60 transition">04</span>
+                    <div class="relative z-10 pt-10">
+                        <div
+                            class="w-14 h-14 bg-white shadow-xl rounded-2xl flex items-center justify-center text-blue-600 mb-6 group-hover:scale-110 transition">
+                            <i class="fas fa-file-invoice-dollar text-xl"></i>
+                        </div>
+                        <h4 class="font-bold mb-3">Smart-Billing</h4>
+                        <p class="text-sm text-slate-500">Automatisierte Abrechnung & Reporting. Du zahlst nur für
+                            erledigte Aufträge.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 3. Vorteile für Unternehmen -->
+    <section id="vorteile" class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-24 items-center">
+                <div>
+                    <h2 class="text-4xl lg:text-5xl font-black mb-10 leading-tight">Logistik ohne <br><span
+                            class="text-blue-600">administrativen Overhead.</span></h2>
+                    <p class="text-lg text-slate-500 mb-12">Vergiss teure Leasingverträge für Fahrzeuge oder komplexe
+                        Dienstpläne. Mit BestellDirekt atmest du mit dem Markt.</p>
+
+                    <div class="space-y-8">
+                        <div class="flex items-start space-x-6">
+                            <div
+                                class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-chart-pie"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-lg mb-1">Variable Kostenstruktur</h5>
+                                <p class="text-slate-500 text-sm">Keine Fixkosten. Du zahlst nur, wenn du auch
+                                    tatsächlich lieferst.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-6">
+                            <div
+                                class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-lg mb-1">Skalierbarkeit auf Knopfdruck</h5>
+                                <p class="text-slate-500 text-sm">Ob 5 oder 500 Lieferungen am Tag – unser System passt
+                                    sich deinem Bedarf an.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start space-x-6">
+                            <div
+                                class="w-12 h-12 bg-blue-50 text-blue-600 rounded-2xl flex items-center justify-center flex-shrink-0">
+                                <i class="fas fa-user-shield"></i>
+                            </div>
+                            <div>
+                                <h5 class="font-bold text-lg mb-1">Garantierte Annahme</h5>
+                                <p class="text-slate-500 text-sm">Durch unser großes Fahrer-Netzwerk finden wir für
+                                    jeden Auftrag einen Partner.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-6">
+                    <div class="card-hover p-8 rounded-[2rem] bg-slate-50/50 flex flex-col items-center text-center">
+                        <div class="text-3xl font-black text-blue-600 mb-2">0 €</div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Fixkosten</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Starten ohne Vorab-Investition oder
+                            Grundgebühr.</p>
+                    </div>
+                    <div
+                        class="card-hover p-8 rounded-[2rem] bg-slate-50/50 flex flex-col items-center text-center mt-12">
+                        <div class="text-3xl font-black text-blue-600 mb-2">100%</div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Transparenz</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Jeder Schritt wird digital erfasst und
+                            dokumentiert.</p>
+                    </div>
+                    <div
+                        class="card-hover p-8 rounded-[2rem] bg-slate-50/50 flex flex-col items-center text-center -mt-12">
+                        <div class="text-3xl font-black text-blue-600 mb-2">&lt; 30s</div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Matching-Zeit</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Blitzschnelle Vermittlung dank KI-Algorithmus.
+                        </p>
+                    </div>
+                    <div class="card-hover p-8 rounded-[2rem] bg-slate-50/50 flex flex-col items-center text-center">
+                        <div class="text-3xl font-black text-blue-600 mb-2">24/7</div>
+                        <p class="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Support</p>
+                        <p class="text-xs text-slate-500 leading-relaxed">Unser Team ist rund um die Uhr für dich da.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 4. Software Features -->
+    <section id="software" class="py-24 bg-slate-950 text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="grid lg:grid-cols-2 gap-20 items-center">
+                <div class="order-2 lg:order-1 relative">
+                    <!-- Feature Mockup Display -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-3xl p-4 shadow-2xl">
+                        <div class="flex justify-between items-center mb-6">
+                            <span class="text-xs font-bold text-slate-500">Live Tracking</span>
+                            <div class="flex space-x-2">
+                                <span class="w-3 h-3 rounded-full bg-slate-800"></span>
+                                <span class="w-3 h-3 rounded-full bg-slate-800"></span>
+                            </div>
+                        </div>
+                        <div class="relative h-[400px] bg-slate-800 rounded-2xl overflow-hidden">
+                            <div class="absolute inset-0 flex items-center justify-center opacity-20">
+                                <i class="fas fa-map-marked-alt text-[200px]"></i>
+                            </div>
+                            <!-- Floating Status Card -->
+                            <div
+                                class="absolute top-8 right-8 bg-white text-slate-900 p-4 rounded-2xl shadow-xl w-64 animate-pulse">
+                                <div class="flex items-center space-x-3 mb-3">
+                                    <div
+                                        class="w-10 h-10 bg-blue-600 rounded-full flex items-center justify-center text-white text-sm">
+                                        <i class="fas fa-user"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-[10px] font-bold text-slate-400 uppercase">Fahrer vor Ort</p>
+                                        <p class="text-xs font-black">Markus Reus</p>
+                                    </div>
+                                </div>
+                                <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                                    <div class="w-3/4 h-full bg-blue-600"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="order-1 lg:order-2">
+                    <div
+                        class="inline-block px-4 py-1.5 mb-6 bg-blue-600/10 text-blue-400 rounded-full text-xs font-bold uppercase tracking-widest border border-blue-600/20">
+                        TaskRelay Enterprise
+                    </div>
+                    <h2 class="text-4xl lg:text-5xl font-black mb-8 leading-tight">Software, die mitdenkt.</h2>
+                    <div class="space-y-10">
+                        <div class="group">
+                            <h4 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition">Reporting &
+                                Analytics</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Behalte den vollen Überblick über deine
+                                KPIs. Analysiere Lieferzeiten, Kosten pro Auftrag und Spitzenzeiten in Echtzeit.</p>
+                        </div>
+                        <div class="group border-t border-slate-900 pt-10">
+                            <h4 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition">Fahrer-Koordination
+                            </h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Keine Telefonate mehr nötig. Kommuniziere
+                                direkt über das Dashboard mit den Fahrern oder lass das System die Koordination
+                                übernehmen.</p>
+                        </div>
+                        <div class="group border-t border-slate-900 pt-10">
+                            <h4 class="text-xl font-bold mb-3 group-hover:text-blue-400 transition">Automatisierte
+                                Abrechnung</h4>
+                            <p class="text-slate-400 text-sm leading-relaxed">Erhalte am Ende des Monats eine
+                                transparente Sammelrechnung für alle durchgeführten Lieferungen. Einfach für die
+                                Buchhaltung.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 5. Testimonials 
+    <section class="py-24 bg-white">
+        <div class="max-w-7xl mx-auto px-6">
+            <h2 class="text-center text-3xl font-black mb-20">Was unsere Partner sagen</h2>
+            <div class="grid md:grid-cols-3 gap-12">
+                <div class="p-10 rounded-3xl bg-slate-50 border border-slate-100 flex flex-col h-full">
+                    <div class="flex text-yellow-400 mb-6">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 italic mb-10 flex-grow">"BestellDirekt hat unsere Lieferkosten um fast 30%
+                        gesenkt. Besonders die Flexibilität an Wochenenden ist für uns ein riesiger Vorteil."</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-slate-200 rounded-full overflow-hidden"></div>
+                        <div>
+                            <p class="font-bold text-sm">Marc B.</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-black">CEO, FreshFood GmbH</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-10 rounded-3xl bg-slate-50 border border-slate-100 flex flex-col h-full">
+                    <div class="flex text-yellow-400 mb-6">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 italic mb-10 flex-grow">"Die Integration über die API war in zwei Tagen
+                        erledigt. Seitdem läuft die Logistik vollautomatisch im Hintergrund."</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-slate-200 rounded-full overflow-hidden"></div>
+                        <div>
+                            <p class="font-bold text-sm">Julia S.</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-black">CTO, Urbano Logistics</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="p-10 rounded-3xl bg-slate-50 border border-slate-100 flex flex-col h-full">
+                    <div class="flex text-yellow-400 mb-6">
+                        <i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i
+                            class="fas fa-star"></i><i class="fas fa-star"></i>
+                    </div>
+                    <p class="text-slate-600 italic mb-10 flex-grow">"Wir konnten unser Liefergebiet innerhalb eines
+                        Monats verdoppeln, ohne einen einzigen neuen Fahrer einstellen zu müssen."</p>
+                    <div class="flex items-center space-x-4">
+                        <div class="w-12 h-12 bg-slate-200 rounded-full overflow-hidden"></div>
+                        <div>
+                            <p class="font-bold text-sm">Stefan K.</p>
+                            <p class="text-[10px] text-slate-400 uppercase font-black">Inhaber, BlumenDirekt</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    -->
+
+    <!-- 6. Call-to-Action -->
+    <section class="py-24 bg-white">
+        <div class="max-w-5xl mx-auto px-6">
+            <div
+                class="bg-blue-600 rounded-[3rem] p-12 lg:p-20 text-center text-white shadow-2xl relative overflow-hidden">
+                <div
+                    class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,_var(--tw-gradient-stops))] from-blue-500 via-blue-600 to-blue-700">
+                </div>
+                <div class="relative z-10">
+                    <h2 class="text-4xl lg:text-6xl font-black mb-8">Wachse mit uns. <br>Ohne Risiko.</h2>
+                    <p class="text-xl opacity-90 mb-12 max-w-2xl mx-auto">Melde dein Unternehmen heute noch an und
+                        profitiere von unserem Netzwerk. Die ersten 5 Lieferungen gehen auf uns.</p>
+                    <div
+                        class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6">
+                        <a href="register.html">
+                            <button
+                                class="bg-white text-blue-600 px-12 py-5 rounded-2xl font-black text-xl hover:scale-105 transition-transform shadow-xl">
+                                Unternehmen registrieren
+                            </button>
+                        </a>
+
+                        <button id="calendly-btn"
+                            class="px-8 py-5 font-bold border border-white/30 rounded-2xl hover:bg-white/10 transition">
+                            Beratungsgespräch buchen
+                        </button>
+
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-slate-900 text-slate-300 pt-20 pb-10 px-6">
+        <div class="max-w-7xl mx-auto">
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+
+                <!-- Column 1: Brand -->
+                <div class="lg:col-span-2 space-y-6">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span class="text-xl font-black tracking-tighter text-white uppercase">
+                            Bestell<span class="text-blue-500">Direkt</span>
+                        </span>
+                    </a>
+
+                    <p class="text-slate-400 max-w-sm leading-relaxed text-sm">
+                        Die intelligenteste Logistik-Plattform für moderne Unternehmen.
+                        Wir verbinden Händler, Fahrer und Kunden in Echtzeit für eine nahtlose Zustellung.
+                    </p>
+
+                    <div class="flex space-x-4">
+                        <a href="https://wa.me/4915510171103"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.facebook.com/bestelldirekt/"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="https://www.instagram.com/bestelldirekt/"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Lösungen -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Lösungen</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="solutions.html" class="footer-link block">Übersicht</a></li>
+                        <li><a href="driver.html" class="footer-link block">Fahrer Portal</a></li>
+                        <li><a href="how-it-works.html" class="footer-link block">So funktioniert’s</a></li>
+                        <!--<li><a href="pricing.html" class="footer-link block">Preise</a></li>
+                    -->
+                    </ul>
+                </div>
+
+                <!-- Column 3: Entwickler -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Entwickler</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="api-docs.html" class="footer-link block">API Referenz</a></li>
+                        <li><a href="sdk.html" class="footer-link block">SDKs & Libraries</a></li>
+                        <li><a href="status.html" class="footer-link block">System Status</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 4: Unternehmen -->
+                <div>
+                    <h4 class="text-white font-bold mb-6">Unternehmen</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="footer-link block">Über uns</a></li>
+                        <li><a href="contact.html" class="footer-link block">Kontakt</a></li>
+                    </ul>
+                </div>
+
+                <!-- Column 5: Newsletter rechts 
+                <div class="lg:col-span-1 lg:justify-self-end order-first lg:order-last">
+                    <h4 class="text-white font-bold mb-6">Stay Updated</h4>
+                    <p class="text-xs text-slate-400 mb-4">
+                        Erhalten Sie Logistik-Insights und Updates direkt in Ihr Postfach.
+                    </p>
+                    <form class="relative">
+                        <input type="email" placeholder="E-Mail Adresse"
+                            class="w-full bg-slate-800 border-none rounded-xl px-4 py-3 text-sm focus:ring-2 focus:ring-blue-600 outline-none">
+                        <button
+                            class="absolute right-2 top-2 w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center hover:bg-blue-500 transition">
+                            <i class="fas fa-arrow-right text-xs text-white"></i>
+                        </button>
+                    </form>
+                </div>-->
+
+            </div>
+
+            <!-- Bottom Bar -->
+            <div
+                class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[11px] font-medium tracking-wider uppercase text-slate-500">
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="legal/privacy.html" class="hover:text-white transition">Datenschutz</a>
+                    <a href="legal/imprint.html" class="hover:text-white transition">Impressum</a>
+                    <a href="legal/terms.html" class="hover:text-white transition">AGB</a>
+                    <a href="legal/cookies.html" class="hover:text-white transition">Cookies</a>
+                </div>
+                <p>© 2025 BestellDirekt. Alle Rechte vorbehalten.</p>
+            </div>
+
+        </div>
+    </footer>
+
+    <script>
+        // DOM Elements
+        const burgerBtn = document.getElementById('burger-btn');
+        const burgerIcon = document.getElementById('burger-icon');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const submenuToggles = document.querySelectorAll('.submenu-toggle');
+
+        // Toggle Mobile Menu
+        burgerBtn.addEventListener('click', () => {
+            const isOpen = mobileMenu.classList.toggle('active');
+
+            // Icon Change (Bars to X)
+            burgerIcon.classList.toggle('fa-bars', !isOpen);
+            burgerIcon.classList.toggle('fa-times', isOpen);
+
+            // Prevent scroll on body when menu is open
+            document.body.style.overflow = isOpen ? 'hidden' : 'auto';
+        });
+
+        // Toggle Submenus
+        submenuToggles.forEach(toggle => {
+            toggle.addEventListener('click', () => {
+                const submenu = toggle.nextElementSibling;
+                const icon = toggle.querySelector('i');
+
+                // Toggle current submenu
+                submenu.classList.toggle('open');
+
+                // Rotate icon
+                if (submenu.classList.contains('open')) {
+                    icon.style.transform = 'rotate(45deg)';
+                } else {
+                    icon.style.transform = 'rotate(0deg)';
+                }
+
+                // Optional: Close other submenus
+                submenuToggles.forEach(otherToggle => {
+                    if (otherToggle !== toggle) {
+                        otherToggle.nextElementSibling.classList.remove('open');
+                        otherToggle.querySelector('i').style.transform = 'rotate(0deg)';
+                    }
+                });
+            });
+        });
+
+        // Close menu on resize if screen gets larger
+        window.addEventListener('resize', () => {
+            if (window.innerWidth >= 1024) {
+                mobileMenu.classList.remove('active');
+                burgerIcon.classList.add('fa-bars');
+                burgerIcon.classList.remove('fa-times');
+                document.body.style.overflow = 'auto';
+            }
+        });
+    </script>
+    <script src="../src/js/calendly.js"></script>
+</body>
+
+</html>

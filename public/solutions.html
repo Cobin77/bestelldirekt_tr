@@ -1,0 +1,498 @@
+<!DOCTYPE html>
+<html lang="de">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Branchenlösungen | Logistik-Infrastruktur für jeden Sektor | BestellDirekt</title>
+    <meta name="description"
+        content="Maßgeschneiderte Logistik-Lösungen für Gastronomie, Pharma, E-Commerce und Einzelhandel. BestellDirekt liefert die Infrastruktur für Ihr Wachstum.">
+    <meta name="keywords"
+        content="Branchenlogistik, Last-Mile-Logistik, Gastronomie Versand, Pharma Logistik, E-Commerce Fulfillment, BestellDirekt">
+    <meta name="robots" content="index, follow">
+
+    <link rel="icon" type="image/png" href="../src/assets/images/favicons/favicon.png">
+    <link rel="apple-touch-icon" href="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <meta property="og:title" content="Branchenlösungen | BestellDirekt">
+    <meta property="og:description"
+        content="Intelligente Logistik für jede Branche. Effizient, skalierbar und lokal integriert.">
+    <meta property="og:image" content="../src/assets/images/favicons/apple-touch-icon.png">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+
+        :root {
+            --brand-blue: #2563eb;
+            --brand-dark: #0f172a;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            color: var(--brand-dark);
+            background-color: #ffffff;
+        }
+
+        /* Navbar Start */
+        .nav-dropdown {
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(10px);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .group:hover .nav-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+
+        /* Mobile Menu Side-Slide */
+        #mobile-menu {
+            transform: translateX(100%);
+            transition: transform 0.3s ease-in-out;
+        }
+
+        #mobile-menu.active {
+            transform: translateX(0);
+        }
+
+        /* Mobile Submenu Toggle */
+        .mobile-submenu {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+        }
+
+        .mobile-submenu.open {
+            max-height: 500px;
+        }
+
+        /* Navbar End */
+
+        .solution-card {
+            border: 1px solid #f1f5f9;
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
+        }
+
+        .solution-card:hover {
+            border-color: #dbeafe;
+            transform: translateY(-5px);
+            box-shadow: 0 30px 50px -15px rgba(37, 99, 235, 0.08);
+        }
+
+        .stat-badge {
+            background: rgba(37, 99, 235, 0.05);
+            color: var(--brand-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 99px;
+            font-size: 0.75rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .sector-pill {
+            padding: 0.4rem 1.2rem;
+            border-radius: 99px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 1px solid #e2e8f0;
+        }
+
+        .sector-pill.active {
+            background: var(--brand-dark);
+            color: white;
+            border-color: var(--brand-dark);
+        }
+
+        .quote-icon {
+            font-size: 3rem;
+            color: #dbeafe;
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            z-index: 0;
+        }
+
+        /* Footer Hover Effects */
+        .footer-link {
+            transition: all 0.2s ease;
+        }
+
+        .footer-link:hover {
+            color: #3b82f6;
+            transform: translateX(4px);
+        }
+    </style>
+</head>
+<link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+<script src="https://assets.calendly.com/assets/external/widget.js" type="text/javascript" async></script>
+
+<body>
+
+    <!-- Navigation -->
+    <nav
+        class="fixed w-full z-[100] bg-white/90 backdrop-blur-xl border-b border-slate-100 h-20 flex items-center px-6">
+        <div class="max-w-7xl mx-auto w-full flex items-center justify-between">
+
+            <!-- Branding -->
+            <a href="index.html" class="flex items-center space-x-2 shrink-0 z-[110]">
+                <div
+                    class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200">
+                    <i class="fas fa-bolt"></i>
+                </div>
+                <div class="flex flex-col">
+                    <span class="text-lg font-black tracking-tighter uppercase leading-none">Bestell<span
+                            class="text-blue-600">Direkt</span></span>
+                    <span class="text-[9px] font-bold text-slate-400 uppercase tracking-widest mt-1">Global
+                        Logistics</span>
+                </div>
+            </a>
+
+            <!-- Desktop Menu -->
+            <div class="hidden lg:flex items-center space-x-1">
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Lösungen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="solutions.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-layer-group"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Übersicht</p>
+                                <p class="text-[11px] text-slate-500">Alle Branchenlösungen</p>
+                            </div>
+                        </a>
+                        <a href="driver.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition mt-1">
+                            <div
+                                class="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center text-slate-600">
+                                <i class="fas fa-bicycle"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">Fahrer Portal</p>
+                                <p class="text-[11px] text-slate-500">Liefer-Partner werden</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Entwickler</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full left-0 w-72 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="api-docs.html"
+                            class="flex items-start space-x-4 p-3 hover:bg-blue-50 rounded-xl transition">
+                            <div
+                                class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center text-blue-600">
+                                <i class="fas fa-code"></i>
+                            </div>
+                            <div>
+                                <p class="text-sm font-bold">API Referenz</p>
+                                <p class="text-[11px] text-slate-500">Dokumentation & Endpunkte</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+
+                <div class="relative group px-3 py-2">
+                    <button
+                        class="flex items-center space-x-1 text-sm font-bold text-slate-600 hover:text-blue-600 transition">
+                        <span>Unternehmen</span>
+                        <i
+                            class="fas fa-chevron-down text-[10px] opacity-40 group-hover:rotate-180 transition-transform"></i>
+                    </button>
+                    <div
+                        class="nav-dropdown absolute top-full right-0 w-64 bg-white border border-slate-100 shadow-2xl rounded-2xl p-4 mt-2">
+                        <a href="about.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition">
+                            <i class="fas fa-users text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Über uns</span>
+                        </a>
+                        <a href="contact.html"
+                            class="flex items-center space-x-3 p-3 hover:bg-slate-50 rounded-xl transition mt-1">
+                            <i class="fas fa-envelope text-slate-400 w-5"></i>
+                            <span class="text-sm font-bold">Kontakt</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex items-center space-x-4 z-[110]">
+                <button id="burger-btn"
+                    class="lg:hidden w-10 h-10 flex items-center justify-center bg-slate-50 text-slate-600 rounded-xl hover:bg-slate-100 transition">
+                    <i class="fas fa-bars" id="burger-icon"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="pt-48 pb-20">
+        <div class="max-w-7xl mx-auto px-6">
+            <div class="max-w-3xl">
+                <div
+                    class="inline-block bg-blue-50 text-blue-600 px-4 py-1.5 rounded-full text-[11px] font-black uppercase tracking-widest mb-6">
+                    Infrastruktur für Leader
+                </div>
+                <h1 class="text-5xl lg:text-7xl font-black mb-8 leading-[1.1]">Die Logistik-Cloud für <span
+                        class="text-blue-600">Macher.</span></h1>
+                <p class="text-xl text-slate-500 leading-relaxed">
+                    Ob Sie die lokale Gastronomie dominieren, sensible Medikamente zustellen oder den E-Commerce der
+                    Zukunft bauen:
+                    BestellDirekt liefert die Technologie und das Netzwerk für Ihre Vision.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Case Studies Grid -->
+    <section id="branchen" class="pb-16">
+        <!--<div class="max-w-7xl mx-auto px-6">
+            <div class="flex flex-wrap gap-3 mb-12">
+                <div class="sector-pill active">Alle Branchen</div>
+                <div class="sector-pill">Gastronomie</div>
+                <div class="sector-pill">Pharma & Health</div>
+                <div class="sector-pill">Retail & E-Commerce</div>
+                <div class="sector-pill">Lebensmittel</div>
+            </div>-->
+
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Gastronomie -->
+            <div class="solution-card rounded-[2.5rem] bg-white p-8">
+                <div class="h-48 rounded-2xl bg-slate-100 mb-6 flex items-center justify-center overflow-hidden">
+                    <i class="fas fa-hamburger text-4xl text-slate-300"></i>
+                </div>
+                <div class="stat-badge mb-4">Senkung Lieferkosten: 35%</div>
+                <h3 class="text-2xl font-black mb-3">Systemgastronomie</h3>
+                <p class="text-slate-500 text-sm mb-6">Unabhängigkeit von teuren Marktplätzen. Integrieren Sie
+                    unsere Flotte direkt in Ihr Kassensystem für maximale Margen.</p>
+                <div class="pt-6 border-t border-slate-50 relative">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="text-xs italic text-slate-600 relative z-10">"Die Automatisierung hat uns gerettet.
+                        Wir steuern 12 Filialen über ein zentrales Dashboard und sparen massiv Provisionen."</p>
+                    <p class="text-[10px] font-bold mt-2 text-slate-400">— Franchise-Partner, Berlin</p>
+                </div>
+            </div>
+
+            <!-- Pharma -->
+            <div class="solution-card rounded-[2.5rem] bg-white p-8 border-blue-100">
+                <div class="h-48 rounded-2xl bg-blue-50 mb-6 flex items-center justify-center">
+                    <i class="fas fa-first-aid text-4xl text-blue-200"></i>
+                </div>
+                <div class="stat-badge mb-4">GPD-konforme Zustellung</div>
+                <h3 class="text-2xl font-black mb-3">Apotheken-Netzwerke</h3>
+                <p class="text-slate-500 text-sm mb-6">E-Rezepte erfordern Geschwindigkeit. Wir liefern Medikamente
+                    sicher und diskret innerhalb von 30-60 Minuten direkt zum Patienten.</p>
+                <div class="pt-6 border-t border-slate-50 relative">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="text-xs italic text-slate-600 relative z-10">"Sicherheit ist nicht verhandelbar. Die
+                        lückenlose Dokumentation von BestellDirekt gibt uns und unseren Kunden Vertrauen."</p>
+                    <p class="text-[10px] font-bold mt-2 text-slate-400">— Inhaberin, München</p>
+                </div>
+            </div>
+
+            <!-- Retail -->
+            <div class="solution-card rounded-[2.5rem] bg-white p-8">
+                <div class="h-48 rounded-2xl bg-slate-100 mb-6 flex items-center justify-center">
+                    <i class="fas fa-tshirt text-4xl text-slate-300"></i>
+                </div>
+                <div class="stat-badge mb-4">Ship-from-Store in 90min</div>
+                <h3 class="text-2xl font-black mb-3">Fashion & Lifestyle</h3>
+                <p class="text-slate-500 text-sm mb-6">Schlagen Sie den Online-Riesen mit lokaler Präsenz. Nutzen
+                    Sie Ihre Stores als Hubs für ultra-schnelle Same-Day Zustellungen.</p>
+                <div class="pt-6 border-t border-slate-50 relative">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="text-xs italic text-slate-600 relative z-10">"Bestellung um 14 Uhr, Kleid an der Tür
+                        um 15:30 Uhr. Das ist das Einkaufserlebnis, das unsere Kunden heute erwarten."</p>
+                    <p class="text-[10px] font-bold mt-2 text-slate-400">— E-Commerce Lead, Köln</p>
+                </div>
+            </div>
+
+            <!-- Lebensmittel -->
+            <div class="solution-card rounded-[2.5rem] bg-white p-8">
+                <div class="h-48 rounded-2xl bg-slate-100 mb-6 flex items-center justify-center">
+                    <i class="fas fa-apple-alt text-4xl text-slate-300"></i>
+                </div>
+                <div class="stat-badge mb-4">Kühlketten-Garantie</div>
+                <h3 class="text-2xl font-black mb-3">Lebensmittel & Feinkost</h3>
+                <p class="text-slate-500 text-sm mb-6">Frische ist Zeit. Wir verbinden Erzeuger und Händler direkt
+                    mit dem Endverbraucher – ohne Umwege über Verteilzentren.</p>
+                <div class="pt-6 border-t border-slate-50 relative">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="text-xs italic text-slate-600 relative z-10">"Vom Bauernhof direkt auf den Tisch.
+                        Durch die optimierte Routenplanung kommen unsere Waren frischer an als je zuvor."</p>
+                    <p class="text-[10px] font-bold mt-2 text-slate-400">— Gründer, Bio-Startup</p>
+                </div>
+            </div>
+
+            <!-- Blumen & Geschenke -->
+            <div class="solution-card rounded-[2.5rem] bg-white p-8">
+                <div class="h-48 rounded-2xl bg-slate-100 mb-6 flex items-center justify-center">
+                    <i class="fas fa-gift text-4xl text-slate-300"></i>
+                </div>
+                <div class="stat-badge mb-4">Pünktlichkeitsrate: 99.8%</div>
+                <h3 class="text-2xl font-black mb-3">Blumen & Präsente</h3>
+                <p class="text-slate-500 text-sm mb-6">Wenn der Moment zählt, darf nichts schiefgehen. Unsere
+                    spezialisierte Flotte garantiert eine vorsichtige Handhabung sensibler Geschenke.</p>
+                <div class="pt-6 border-t border-slate-50 relative">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="text-xs italic text-slate-600 relative z-10">"Am Valentinstag oder Muttertag brauchen
+                        wir Skalierbarkeit. BestellDirekt fängt unsere Spitzen perfekt ab."</p>
+                    <p class="text-[10px] font-bold mt-2 text-slate-400">— Inhaber, Floristik-Kette</p>
+                </div>
+            </div>
+
+            <!-- B2B Logistik -->
+            <div class="solution-card rounded-[2.5rem] bg-white p-8">
+                <div class="h-48 rounded-2xl bg-slate-100 mb-6 flex items-center justify-center">
+                    <i class="fas fa-boxes text-4xl text-slate-300"></i>
+                </div>
+                <div class="stat-badge mb-4">Just-in-Time Delivery</div>
+                <h3 class="text-2xl font-black mb-3">B2B & Ersatzteile</h3>
+                <p class="text-slate-500 text-sm mb-6">Minimieren Sie Stillstandzeiten. Wir liefern Ersatzteile und
+                    Dokumente per Express-Kurier direkt zum Einsatzort.</p>
+                <div class="pt-6 border-t border-slate-50 relative">
+                    <i class="fas fa-quote-left quote-icon"></i>
+                    <p class="text-xs italic text-slate-600 relative z-10">"Die API-Integration in unser ERP
+                        ermöglicht uns, Kurierfahrten per Mausklick zu buchen. Ein riesiger Zeitgewinn."</p>
+                    <p class="text-[10px] font-bold mt-2 text-slate-400">— Betriebsleiter, Industrie-Service</p>
+                </div>
+            </div>
+        </div>
+        </div>
+    </section>
+
+    <!-- Metrics Section -->
+    <section class="py-24 bg-slate-900 text-white overflow-hidden relative">
+        <div class="max-w-7xl mx-auto px-6 relative z-10">
+            <div class="grid lg:grid-cols-4 gap-12 text-center">
+                <div>
+                    <div class="text-5xl font-black text-blue-500 mb-2">250k+</div>
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Zustellungen jährlich
+                    </div>
+                </div>
+                <div>
+                    <div class="text-5xl font-black text-blue-500 mb-2">99.4%</div>
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Service-Level Agreement
+                    </div>
+                </div>
+                <div>
+                    <div class="text-5xl font-black text-blue-500 mb-2">&lt; 45min</div>
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Durchschnittliche
+                        Zustellzeit</div>
+                </div>
+                <div>
+                    <div class="text-5xl font-black text-blue-500 mb-2">€0</div>
+                    <div class="text-[10px] font-bold uppercase tracking-widest text-slate-500">Investitionskosten für
+                        Start</div>
+                </div>
+            </div>
+        </div>
+        <div
+            class="absolute inset-0 opacity-10 bg-[linear-gradient(30deg,#2563eb_12%,transparent_12.5%,transparent_87%,#2563eb_87.5%,#2563eb),linear-gradient(150deg,#2563eb_12%,transparent_12.5%,transparent_87%,#2563eb_87.5%,#2563eb),linear-gradient(30deg,#2563eb_12%,transparent_12.5%,transparent_87%,#2563eb_87.5%,#2563eb),linear-gradient(150deg,#2563eb_12%,transparent_12.5%,transparent_87%,#2563eb_87.5%,#2563eb),linear-gradient(60deg,#2563eb_25%,transparent_25.5%,transparent_75%,#2563eb_75%,#2563eb),linear-gradient(60deg,#2563eb_25%,transparent_25.5%,transparent_75%,#2563eb_75%,#2563eb)] [background-size:80px_140px]">
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-24 bg-white">
+        <div class="max-w-4xl mx-auto px-6 text-center">
+            <h2 class="text-4xl font-black mb-8 leading-tight">Ihre Branche. Unsere Logistik. Ein Erfolgsteam.</h2>
+            <p class="text-xl text-slate-500 mb-12">Kontaktieren Sie uns für eine unverbindliche Analyse Ihrer
+                Lieferprozesse.</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <button id="calendly-btn"
+                    class="bg-blue-600 text-white px-10 py-5 rounded-2xl font-black text-lg shadow-2xl hover:bg-blue-700 transition">
+                    Beratungsgespräch buchen
+                </button>
+                <a href="how-it-works.html"
+                    class="bg-white border-2 border-slate-100 text-slate-900 px-10 py-5 rounded-2xl font-black text-lg hover:border-blue-600 hover:text-blue-600 transition">Wie
+                    es funktioniert</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-300 pt-20 pb-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
+                <div class="lg:col-span-2 space-y-6">
+                    <a href="index.html" class="flex items-center space-x-2">
+                        <div class="w-10 h-10 bg-blue-600 rounded-xl flex items-center justify-center text-white">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <span class="text-xl font-black tracking-tighter text-white uppercase">
+                            Bestell<span class="text-blue-500">Direkt</span>
+                        </span>
+                    </a>
+                    <p class="text-slate-400 max-w-sm leading-relaxed text-sm">
+                        Die smarte Logistik-Plattform für wachsende Unternehmen. Wir digitalisieren die letzte Meile.
+                    </p>
+                    <div class="flex space-x-4">
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i
+                                class="fab fa-whatsapp"></i></a>
+                        <a href="#"
+                            class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center hover:bg-blue-600 hover:text-white transition"><i
+                                class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Lösungen</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="solutions.html" class="footer-link block text-blue-500">Übersicht</a></li>
+                        <li><a href="driver.html" class="footer-link block">Fahrer Portal</a></li>
+                        <li><a href="how-it-works.html" class="footer-link block">Funktionsweise</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Entwickler</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="api-docs.html" class="footer-link block">API Dokumentation</a></li>
+                        <li><a href="#" class="footer-link block">System Status</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-white font-bold mb-6">Unternehmen</h4>
+                    <ul class="space-y-4 text-sm">
+                        <li><a href="about.html" class="footer-link block">Über uns</a></li>
+                        <li><a href="contact.html" class="footer-link block">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div
+                class="pt-8 border-t border-slate-800 flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0 text-[11px] font-medium tracking-wider uppercase text-slate-500">
+                <div class="flex flex-wrap justify-center gap-6">
+                    <a href="privacy.html" class="hover:text-white transition">Datenschutz</a>
+                    <a href="imprint.html" class="hover:text-white transition">Impressum</a>
+                    <a href="terms.html" class="hover:text-white transition">AGB</a>
+                </div>
+                <p>© 2025 BestellDirekt. Alle Rechte vorbehalten.</p>
+            </div>
+        </div>
+    </footer>
+    <script src="../src/js/calendly.js"></script>
+
+</body>
+
+</html>
